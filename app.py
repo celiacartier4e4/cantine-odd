@@ -1,6 +1,6 @@
 import streamlit as st
 
-# --- STYLE CSS GLOBAL : FOND BLEU MARINE ET TERRE EN ROTATION ---
+# --- STYLE CSS GLOBAL : FOND BLEU MARINE ET TERRE FIXE ---
 st.markdown(
     """
     <style>
@@ -9,7 +9,7 @@ st.markdown(
         background-color: #001F5B; /* Bleu marine */
     }
 
-    /* 2. Ajoute la Terre en rotation en arrière-plan */
+    /* 2. Ajoute la Terre fixe en arrière-plan */
     [data-testid="stAppViewContainer"]::before {
         content: "";
         position: fixed;
@@ -18,11 +18,11 @@ st.markdown(
         transform: translate(-50%, -50%); /* Centre parfaitement */
         width: 100vw; /* Utilise toute la largeur visible */
         height: 100vh; /* Utilise toute la hauteur visible */
-        background-image: url("https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif");
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/800px-The_Earth_seen_from_Apollo_17.jpg");
         background-size: contain; /* Adapte l'image sans la recadrer */
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.2; /* Rend la Terre subtile pour ne pas gêner la lecture */
+        opacity: 0.15; /* Subtile pour ne pas gêner la lecture */
         z-index: -1; /* Place l'image derrière le contenu */
     }
 
@@ -139,4 +139,12 @@ with col_droite:
     st.markdown(
         """
         <div class="mission-box">
-            <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION
+            <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION</h2>
+            <p style="font-size: 22px; font-weight: bold; color: #31333F; margin-bottom: 10px;">Réduire le gaspillage</p>
+            <p style="font-size: 14px; color: #666666; font-style: italic; margin: 0; padding-top: 10px; border-top: 1px dashed #D0D0D0;">
+                Restes d'assiettes — Objectif : Réduire le gaspillage direct !
+            </p>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
