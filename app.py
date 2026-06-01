@@ -95,7 +95,6 @@ with col_droite:
     poids_alim = st.number_input("Ajustez la valeur :", min_value=0.0, value=42.0, step=0.5, key="alim")
     unite_alim = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_alim")
     st.write(f"**Poids enregistré :** {poids_alim} {unite_alim}")
-    # La ligne st.caption a été supprimée d'ici
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- CATEGORIE 3 : Fruits entamés ---
@@ -106,8 +105,10 @@ with col_droite:
     st.write(f"**Poids enregistré :** {poids_fruits} {unite_fruits}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- NOUVEL ENCADRÉ : MISSION ---
+    # --- ENCADRÉ : MISSION (Contenant désormais la phrase explicative tout en bas) ---
     st.markdown(
         """
         <div class="mission-box">
             <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION</h2>
+            <p style="font-size: 22px; font-weight: bold; color: #31333F; margin-bottom: 10px;">Réduire le gaspillage</p>
+            <p style="font
