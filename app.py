@@ -39,9 +39,9 @@ st.markdown(
         color: #111111 !important;
     }
 
-    /* 5. Ligne de séparation blanche entre les colonnes */
+    /* 5. Création de la ligne épaisse NOIRE entre les deux colonnes */
     [data-testid="column"]:nth-child(1) {
-        border-right: 5px solid #FFFFFF;
+        border-right: 5px solid #000000; /* Ligne noire */
         padding-right: 30px;
     }
     
