@@ -89,7 +89,7 @@ with col_gauche:
     unite_serviettes = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_serviettes")
     st.write(f"**Poids enregistré :** {poids_serviettes} {unite_serviettes}")
     
-    # Équivalence Serviettes (1 serviette ≈ 3g)
+    # Équivalence Serviettes (1 serviette = 3g)
     val_serviettes = poids_serviettes if unite_serviettes == "kg" else poids_serviettes / 1000
     nb_serviettes = int(val_serviettes / 0.003)
     st.write(f"💡 *Cela représente environ **{nb_serviettes} serviettes** jetées !*")
@@ -102,7 +102,7 @@ with col_gauche:
     unite_emballages = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_emballages")
     st.write(f"**Poids enregistré :** {poids_emballages} {unite_emballages}")
     
-    # Équivalence Emballages (1 emballage plastique/yaourt ≈ 20g)
+    # Équivalence Emballages (1 emballage = 20g)
     val_emballages = poids_emballages if unite_emballages == "kg" else poids_emballages / 1000
     nb_emballages = int(val_emballages / 0.020)
     st.write(f"💡 *Cela représente environ **{nb_emballages} emballages** jetés !*")
@@ -111,6 +111,4 @@ with col_gauche:
     # --- CATEGORIE 2 : Poubelle à Pain ---
     st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.2); margin-bottom: 25px;">', unsafe_allow_html=True)
     st.subheader("🥖 Poubelle à Pain")
-    poids_pain = st.number_input("Ajustez la valeur :", min_value=0.0, value=8.0, step=0.5, key="pain")
-    unite_pain = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_pain")
-    st.write(f"**Poids enregistré :** {poids
+    poids_pain = st.number
