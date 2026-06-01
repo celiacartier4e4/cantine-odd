@@ -39,9 +39,9 @@ st.markdown(
         color: #111111 !important;
     }
 
-    /* 5. Création de la ligne épaisse NOIRE entre les deux colonnes */
+    /* 5. Création de la ligne épaisse BLANCHE entre les deux colonnes */
     [data-testid="column"]:nth-child(1) {
-        border-right: 5px solid #000000; /* Ligne noire */
+        border-right: 5px solid #FFFFFF; /* Ligne blanche */
         padding-right: 30px;
     }
     
@@ -144,25 +144,4 @@ with col_droite:
     st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.2); margin-bottom: 25px;">', unsafe_allow_html=True)
     st.subheader("🍎 Fruits entamés")
     poids_fruits = st.number_input("Ajustez la valeur :", min_value=0.0, value=5.0, step=0.5, key="fruits")
-    unite_fruits = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_fruits")
-    st.write(f"**Poids enregistré :** {poids_fruits} {unite_fruits}")
-    
-    # Équivalence Fruits (1 fruit = 120g)
-    val_fruits = poids_fruits if unite_fruits == "kg" else poids_fruits / 1000
-    nb_fruits = int(val_fruits / 0.120)
-    st.write(f"💡 *Cela représente environ **{nb_fruits} fruits entiers** gaspillés !*")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- ENCADRÉ MISSION ---
-    st.markdown(
-        """
-        <div class="mission-box">
-            <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION</h2>
-            <p style="font-size: 22px; font-weight: bold; color: #111111; margin-bottom: 10px;">Réduire le gaspillage</p>
-            <p style="font-size: 14px; color: #333333; font-style: italic; margin: 0; padding-top: 10px; border-top: 1px dashed #111111;">
-                Restes d'assiettes - Objectif : Réduire le gaspillage direct !
-            </p>
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
+    unite_fruits = st
