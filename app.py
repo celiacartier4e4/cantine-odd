@@ -31,14 +31,7 @@ st.markdown(
         color: #FFFFFF !important;
     }
 
-    /* 4. Soulignement spécifique pour le titre principal (h1) */
-    h1 {
-        text-decoration: underline;
-        text-decoration-color: #FFFFFF; /* Couleur du soulignement */
-        text-underline-offset: 8px;      /* Espace entre le texte et la ligne */
-    }
-
-    /* 5. Textes foncés à l'intérieur des boîtes roses pour le contraste */
+    /* 4. Textes foncés à l'intérieur des boîtes roses pour le contraste */
     [style*="background-color: #FFB6C1"] h2,
     [style*="background-color: #FFB6C1"] p,
     [style*="background-color: #FFB6C1"] li,
@@ -46,7 +39,7 @@ st.markdown(
         color: #111111 !important;
     }
 
-    /* 6. Ligne de séparation blanche entre les colonnes */
+    /* 5. Ligne de séparation blanche entre les colonnes */
     [data-testid="column"]:nth-child(1) {
         border-right: 5px solid #FFFFFF;
         padding-right: 30px;
@@ -71,7 +64,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Titre principal (qui sera automatiquement souligné via le CSS)
+# Titre principal (sans soulignement)
 st.title("🍏 Objectif Zéro Gaspi - Collège Jean Giono 🍎")
 st.subheader("Suivi des déchets pour 700 demi-pensionnaires (ODD 12)")
 
@@ -101,29 +94,4 @@ with col_gauche:
     st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.2); margin-bottom: 25px;">', unsafe_allow_html=True)
     st.subheader("📦 Emballages")
     poids_emballages = st.number_input("Ajustez la valeur :", min_value=0.0, value=6.0, step=0.5, key="emballages")
-    unite_emballages = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_emballages")
-    st.write(f"**Poids enregistré :** {poids_emballages} {unite_emballages}")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE 2 : Poubelle à Pain ---
-    st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.2); margin-bottom: 25px;">', unsafe_allow_html=True)
-    st.subheader("🥖 Poubelle à Pain")
-    poids_pain = st.number_input("Ajustez la valeur :", min_value=0.0, value=8.0, step=0.5, key="pain")
-    unite_pain = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_pain")
-    st.write(f"**Poids enregistré :** {poids_pain} {unite_pain}")
-    
-    valeur_pain = poids_pain
-    if unite_pain == "g":
-        valeur_pain = valeur_pain / 1000
-    nb_baguettes = int(valeur_pain / 0.25)
-    st.write(f"💡 *Cela représente environ **{nb_baguettes} baguettes** perdues !*")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-
-# ==========================================
-# COLONNE DROITE
-# ==========================================
-with col_droite:
-    
-    # --- CATEGORIE 1 : Déchets Alimentaires ---
-    st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px
+    unite_emballages = st.selectbox("Choisir l'unité :", ["kg", "g"], key="
