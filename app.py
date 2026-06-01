@@ -1,17 +1,47 @@
 import streamlit as st
 
-# --- STYLE CSS GLOBAL ---
+# --- STYLE CSS GLOBAL : FOND BLEU MARINE ET TERRE EN ROTATION ---
 st.markdown(
     """
     <style>
-    /* 1. Fond du site en rose pastel */
+    /* 1. Définit le fond de tout le site en bleu marine */
     .stApp {
-        background-color: #FFE5E5;
+        background-color: #001F5B; /* Bleu marine */
     }
 
-    /* 2. Création de la ligne épaisse entre les deux colonnes */
+    /* 2. Ajoute la Terre en rotation en arrière-plan */
+    [data-testid="stAppViewContainer"]::before {
+        content: "";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Centre parfaitement */
+        width: 100vw; /* Utilise toute la largeur visible */
+        height: 100vh; /* Utilise toute la hauteur visible */
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif");
+        background-size: contain; /* Adapte l'image sans la recadrer */
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.2; /* Rend la Terre subtile pour ne pas gêner la lecture */
+        z-index: -1; /* Place l'image derrière le contenu */
+    }
+
+    /* 3. Style pour les textes principaux pour qu'ils soient lisibles sur fond foncé */
+    h1, h2, h3, h4, h5, h6, .stMarkdown, p, li, label, .stText {
+        color: #FFFFFF !important; /* Force le texte en blanc */
+    }
+
+    /* 4. Style pour les éléments dans les encadrés jaunes (lisibilité) */
+    [style*="background-color: #FFF2CC"] h2,
+    [style*="background-color: #FFF2CC"] p,
+    [style*="background-color: #FFF2CC"] li,
+    [style*="background-color: #FFF2CC"] label {
+        color: #31333F !important; /* Texte foncé dans les boîtes jaunes */
+    }
+
+    /* 5. Création de la ligne épaisse entre les deux colonnes */
     [data-testid="column"]:nth-child(1) {
-        border-right: 5px solid #E0E0E0;
+        border-right: 5px solid #FFFFFF; /* Ligne blanche */
         padding-right: 30px;
     }
     
@@ -68,7 +98,7 @@ with col_gauche:
     st.write(f"**Poids enregistré :** {poids_emballages} {unite_emballages}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- CATEGORIE 2 : Poubelle à Pain (DÉPLACÉE ICI) ---
+    # --- CATEGORIE 2 : Poubelle à Pain ---
     st.markdown('<div style="background-color: #FFF2CC; border: 1px solid #E0E0E0; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1); margin-bottom: 25px;">', unsafe_allow_html=True)
     st.subheader("🥖 Poubelle à Pain")
     poids_pain = st.number_input("Ajustez la valeur :", min_value=0.0, value=8.0, step=0.5, key="pain")
@@ -95,7 +125,6 @@ with col_droite:
     poids_alim = st.number_input("Ajustez la valeur :", min_value=0.0, value=42.0, step=0.5, key="alim")
     unite_alim = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_alim")
     st.write(f"**Poids enregistré :** {poids_alim} {unite_alim}")
-    st.caption("Restes d'assiettes — Objectif : Réduire le gaspillage direct !")
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- CATEGORIE 3 : Fruits entamés ---
@@ -106,13 +135,8 @@ with col_droite:
     st.write(f"**Poids enregistré :** {poids_fruits} {unite_fruits}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- NOUVEL ENCADRÉ : MISSION (À LA PLACE DU PAIN) ---
+    # --- ENCADRÉ : MISSION ---
     st.markdown(
         """
         <div class="mission-box">
-            <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION</h2>
-            <p style="font-size: 22px; font-weight: bold; color: #31333F;">Réduire le gaspillage</p>
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
+            <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION
