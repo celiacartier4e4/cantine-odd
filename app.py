@@ -11,20 +11,40 @@ notre collège quantifie les déchets de la cantine pour sensibiliser la communa
 
 # Création des colonnes pour afficher les chiffres en gros (les compteurs)
 st.markdown("### 📊 Nos Pesées Hebdomadaires")
+st.markdown("### 📊 Nos Pesées Hebdomadaires")
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric(label="Déchets Alimentaires", value="42 kg", delta="À réduire")
-with col2:
-    st.metric(label="Poubelle à Pain", value="8 kg", delta="Objectif 0g !")
-with col3:
-    st.metric(label="Fruits entamés", value="5 kg")
+# --- CATEGORIE 1 ---
+with st.container(border=True):
+    st.subheader("🗑️ Déchets Alimentaires")
+    st.write("**Poids mesuré :** 42 kg")
+    st.caption("Restes d'assiettes — Objectif : Réduire le gaspillage direct !")
 
-col4, col5 = st.columns(2)
-with col4:
-    st.metric(label="Serviettes en papier", value="3 kg")
-with col5:
-    st.metric(label="Emballages", value="6 kg")
+# --- CATEGORIE 2 ---
+with st.container(border=True):
+    st.subheader("🥖 Poubelle à Pain")
+    st.write("**Poids mesuré :** 8 kg")
+    st.caption("Pain jeté — Objectif : Prendre juste ce qu'il faut.")
+
+# --- CATEGORIE 3 ---
+with st.container(border=True):
+    st.subheader("🍎 Fruits entamés")
+    st.write("**Poids mesuré :** 5 kg")
+    st.caption("Fruits non terminés — Objectif : Mieux évaluer sa faim.")
+
+# --- CATEGORIE 4 ---
+with st.container(border=True):
+    st.subheader("🧻 Serviettes en papier")
+    st.write("**Poids mesuré :** 3 kg")
+    st.caption("Déchets non alimentaires.")
+
+# --- CATEGORIE 5 ---
+with st.container(border=True):
+    st.subheader("📦 Emballages")
+    st.write("**Poids mesuré :** 6 kg")
+    st.caption("Plastiques, pots de yaourts, etc.")
+
+# Ligne de séparation
+st.write("---")
 
 # Un petit message d'explication
 st.info("💡 Le saviez-vous ? 8 kg de pain jetés représentent environ 32 baguettes perdues !")
