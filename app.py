@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Titre principal de la page
-st.title("🍏 Objectif Zéro Gaspi - Collège du Vaucluse")
+st.title("🍏 Objectif Zéro Gaspi - Collège Jean Giono, Orange")
 st.subheader("Suivi des déchets pour 700 demi-pensionnaires (ODD 12)")
 
 st.write("""
