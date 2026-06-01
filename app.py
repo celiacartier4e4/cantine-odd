@@ -5,38 +5,56 @@ st.title("🍏 Objectif Zéro Gaspi - Collège Jean Giono")
 st.subheader("Suivi des déchets pour 700 demi-pensionnaires (ODD 12)")
 
 st.write("""
-**À vous de jouer !** Entrez les poids mesurés à la cantine dans les cases ci-dessous pour voir l'impact de notre gaspillage.
+**À vous de jouer !** Choisissez l'unité (g ou kg), puis tapez le poids mesuré dans la case pour chaque catégorie.
 """)
 
 st.markdown("### 📊 Nos Pesées Hebdomadaires")
 
-# --- CATEGORIE 1 ---
+# --- CATEGORIE 1 : Déchets Alimentaires ---
 with st.container(border=True):
     st.subheader("🗑️ Déchets Alimentaires")
-    # On crée la case modifiable par l'utilisateur (42.0 est la valeur de départ)
-    poids_alim = st.number_input("Entrez le poids des déchets alimentaires (en kg) :", min_value=0.0, value=42.0, step=0.5, key="alim")
+    # Choix de l'unité
+    unite_alim = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_alim")
+    # Case de saisie libre (sans + ou -)
+    poids_alim = st.text_input("Entrez la valeur (ex: 42 ou 500) :", value="42", key="alim")
+    st.write(f"**Poids enregistré :** {poids_alim} {unite_alim}")
     st.caption("Restes d'assiettes — Objectif : Réduire le gaspillage direct !")
 
-# --- CATEGORIE 2 ---
+# --- CATEGORIE 2 : Poubelle à Pain ---
 with st.container(border=True):
     st.subheader("🥖 Poubelle à Pain")
-    # Case modifiable pour le pain (8.0 au départ)
-    poids_pain = st.number_input("Entrez le poids du pain jeté (en kg) :", min_value=0.0, value=8.0, step=0.5, key="pain")
-    # Calcul en direct du nombre de baguettes
-    nb_baguettes = int(poids_pain / 0.25)
-    st.write(f"💡 *Cela représente environ **{nb_baguettes} baguettes** perdues !*")
+    unite_pain = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_pain")
+    poids_pain = st.text_input("Entrez la valeur (ex: 8 ou 250) :", value="8", key="pain")
+    st.write(f"**Poids enregistré :** {poids_pain} {unite_pain}")
+    
+    # Petit calcul automatique pour le pain (si l'utilisateur a écrit un nombre valide)
+    try:
+        valeur_pain = float(poids_pain.replace(",", "."))
+        # Si c'est en grammes, on convertit en kg pour le calcul des baguettes
+        if unite_pain == "g":
+            valeur_pain = valeur_pain / 1000
+        nb_baguettes = int(valeur_pain / 0.25)
+        st.write(f"💡 *Cela représente environ **{nb_baguettes} baguettes** perdues !*")
+    except:
+        st.write("💡 *Entrez un chiffre valide pour voir l'équivalent en baguettes.*")
 
-# --- CATEGORIE 3 ---
+# --- CATEGORIE 3 : Fruits entamés ---
 with st.container(border=True):
     st.subheader("🍎 Fruits entamés")
-    poids_fruits = st.number_input("Entrez le poids des fruits jetés (en kg) :", min_value=0.0, value=5.0, step=0.5, key="fruits")
+    unite_fruits = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_fruits")
+    poids_fruits = st.text_input("Entrez la valeur :", value="5", key="fruits")
+    st.write(f"**Poids enregistré :** {poids_fruits} {unite_fruits}")
 
-# --- CATEGORIE 4 ---
+# --- CATEGORIE 4 : Serviettes en papier ---
 with st.container(border=True):
     st.subheader("🧻 Serviettes en papier")
-    poids_serviettes = st.number_input("Entrez le poids des serviettes (en kg) :", min_value=0.0, value=3.0, step=0.5, key="serviettes")
+    unite_serviettes = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_serviettes")
+    poids_serviettes = st.text_input("Entrez la valeur :", value="3", key="serviettes")
+    st.write(f"**Poids enregistré :** {poids_serviettes} {unite_serviettes}")
 
-# --- CATEGORIE 5 ---
+# --- CATEGORIE 5 : Emballages ---
 with st.container(border=True):
     st.subheader("📦 Emballages")
-    poids_emballages = st.number_input("Entrez le poids des emballages (en kg) :", min_value=0.0, value=6.0, step=0.5, key="emballages")
+    unite_emballages = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_emballages")
+    poids_emballages = st.text_input("Entrez la valeur :", value="6", key="emballages")
+    st.write(f"**Poids enregistré :** {poids_emballages} {unite_emballages}")
