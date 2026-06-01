@@ -1,12 +1,33 @@
 import streamlit as st
 
-# --- STYLE CSS : FOND DU SITE EN ROSE ---
+# --- STYLE CSS GLOBAL ---
 st.markdown(
     """
     <style>
-    /* Colore le fond de tout le site en rose pastel */
+    /* 1. Fond du site en rose pastel */
     .stApp {
         background-color: #FFE5E5;
+    }
+
+    /* 2. Création de la ligne épaisse entre les deux colonnes */
+    [data-testid="column"]:nth-child(1) {
+        border-right: 5px solid #E0E0E0;
+        padding-right: 30px;
+    }
+    
+    [data-testid="column"]:nth-child(2) {
+        padding-left: 30px;
+    }
+
+    /* Style pour les encadrés jaunes (réutilisé pour la mission) */
+    .mission-box {
+        background-color: #FFF2CC;
+        border: 2px solid #E0E0E0;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+        text-align: center;
+        margin-bottom: 25px;
     }
     </style>
     """,
@@ -23,11 +44,11 @@ st.write("""
 
 st.markdown("### 📊 Nos Pesées Hebdomadaires")
 
-# Création des deux colonnes (sans lignes de séparation)
+# Création des deux colonnes
 col_gauche, col_droite = st.columns(2)
 
 # ==========================================
-# COLONNE GAUCHE : Serviettes et Emballages
+# COLONNE GAUCHE
 # ==========================================
 with col_gauche:
     
@@ -47,9 +68,24 @@ with col_gauche:
     st.write(f"**Poids enregistré :** {poids_emballages} {unite_emballages}")
     st.markdown('</div>', unsafe_allow_html=True)
 
+    # --- CATEGORIE 2 : Poubelle à Pain (DÉPLACÉE ICI) ---
+    st.markdown('<div style="background-color: #FFF2CC; border: 1px solid #E0E0E0; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1); margin-bottom: 25px;">', unsafe_allow_html=True)
+    st.subheader("🥖 Poubelle à Pain")
+    poids_pain = st.number_input("Ajustez la valeur :", min_value=0.0, value=8.0, step=0.5, key="pain")
+    unite_pain = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_pain")
+    st.write(f"**Poids enregistré :** {poids_pain} {unite_pain}")
+
+    # Calcul automatique du nombre de baguettes
+    valeur_pain = poids_pain
+    if unite_pain == "g":
+        valeur_pain = valeur_pain / 1000
+    nb_baguettes = int(valeur_pain / 0.25)
+    st.write(f"💡 *Cela représente environ **{nb_baguettes} baguettes** perdues !*")
+    st.markdown('</div>', unsafe_allow_html=True)
+
 
 # ==========================================
-# COLONNE DROITE : Déchets Alim, Fruits, Pain
+# COLONNE DROITE
 # ==========================================
 with col_droite:
     
@@ -70,17 +106,13 @@ with col_droite:
     st.write(f"**Poids enregistré :** {poids_fruits} {unite_fruits}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- CATEGORIE 2 : Poubelle à Pain ---
-    st.markdown('<div style="background-color: #FFF2CC; border: 1px solid #E0E0E0; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1); margin-bottom: 25px;">', unsafe_allow_html=True)
-    st.subheader("🥖 Poubelle à Pain")
-    poids_pain = st.number_input("Ajustez la valeur :", min_value=0.0, value=8.0, step=0.5, key="pain")
-    unite_pain = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_pain")
-    st.write(f"**Poids enregistré :** {poids_pain} {unite_pain}")
-
-    # Calcul automatique du nombre de baguettes
-    valeur_pain = poids_pain
-    if unite_pain == "g":
-        valeur_pain = valeur_pain / 1000
-    nb_baguettes = int(valeur_pain / 0.25)
-    st.write(f"💡 *Cela représente environ **{nb_baguettes} baguettes** perdues !*")
-    st.markdown('</div>', unsafe_allow_html=True)
+    # --- NOUVEL ENCADRÉ : MISSION (À LA PLACE DU PAIN) ---
+    st.markdown(
+        """
+        <div class="mission-box">
+            <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION</h2>
+            <p style="font-size: 22px; font-weight: bold; color: #31333F;">Réduire le gaspillage</p>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
