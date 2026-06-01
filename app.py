@@ -68,7 +68,7 @@ with col_gauche:
     st.write(f"**Poids enregistré :** {poids_emballages} {unite_emballages}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- CATEGORIE 2 : Poubelle à Pain ---
+    # --- CATEGORIE 2 : Poubelle à Pain (DÉPLACÉE ICI) ---
     st.markdown('<div style="background-color: #FFF2CC; border: 1px solid #E0E0E0; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1); margin-bottom: 25px;">', unsafe_allow_html=True)
     st.subheader("🥖 Poubelle à Pain")
     poids_pain = st.number_input("Ajustez la valeur :", min_value=0.0, value=8.0, step=0.5, key="pain")
@@ -95,6 +95,7 @@ with col_droite:
     poids_alim = st.number_input("Ajustez la valeur :", min_value=0.0, value=42.0, step=0.5, key="alim")
     unite_alim = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_alim")
     st.write(f"**Poids enregistré :** {poids_alim} {unite_alim}")
+    st.caption("Restes d'assiettes — Objectif : Réduire le gaspillage direct !")
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- CATEGORIE 3 : Fruits entamés ---
@@ -105,10 +106,13 @@ with col_droite:
     st.write(f"**Poids enregistré :** {poids_fruits} {unite_fruits}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- ENCADRÉ : MISSION (Contenant désormais la phrase explicative tout en bas) ---
+    # --- NOUVEL ENCADRÉ : MISSION (À LA PLACE DU PAIN) ---
     st.markdown(
         """
         <div class="mission-box">
             <h2 style="color: #FF4B4B; margin: 0;">🎯 MISSION</h2>
-            <p style="font-size: 22px; font-weight: bold; color: #31333F; margin-bottom: 10px;">Réduire le gaspillage</p>
-            <p style="font
+            <p style="font-size: 22px; font-weight: bold; color: #31333F;">Réduire le gaspillage</p>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
