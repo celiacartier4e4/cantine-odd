@@ -1,12 +1,12 @@
 import streamlit as st
 
-# --- STYLE CSS GLOBAL : FOND BLEU MARINE ET TERRE FIXE ---
+# --- STYLE CSS GLOBAL : FOND BLEU NUIT PROFOND ET TERRE FIXE ---
 st.markdown(
     """
     <style>
-    /* 1. Définit le fond de tout le site en bleu marine */
+    /* 1. Définit le fond de tout le site en bleu nuit très foncé */
     .stApp {
-        background-color: #001F5B; /* Bleu marine */
+        background-color: #0A1128; /* Bleu nuit espace profond */
     }
 
     /* 2. Ajoute la Terre fixe en arrière-plan */
@@ -22,7 +22,7 @@ st.markdown(
         background-size: contain; /* Adapte l'image sans la recadrer */
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.15; /* Subtile pour ne pas gêner la lecture */
+        opacity: 0.18; /* Subtile pour préserver la lisibilité */
         z-index: -1; /* Place l'image derrière le contenu */
     }
 
