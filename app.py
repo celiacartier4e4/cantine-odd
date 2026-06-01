@@ -13,8 +13,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Titre principal de la page
-st.title("🍏 Objectif Zéro Gaspi - Collège Jean Giono")
+# Titre principal de la page (pomme verte au début, pomme rouge à la fin)
+st.title("🍏 Objectif Zéro Gaspi - Collège Jean Giono 🍎")
 st.subheader("Suivi des déchets pour 700 demi-pensionnaires (ODD 12)")
 
 st.write("""
