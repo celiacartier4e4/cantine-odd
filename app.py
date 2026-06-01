@@ -41,12 +41,22 @@ st.markdown(
 
     /* 5. Création de la ligne épaisse BLANCHE entre les deux colonnes */
     [data-testid="column"]:nth-child(1) {
-        border-right: 5px solid #FFFFFF; /* Ligne blanche */
+        border-right: 5px solid #FFFFFF;
         padding-right: 30px;
     }
     
     [data-testid="column"]:nth-child(2) {
         padding-left: 30px;
+    }
+
+    /* Style spécifique pour la boîte OBJECTIF (blanc transparent) */
+    .objectif-box {
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 2px solid #FFFFFF;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 20px;
     }
 
     /* Style spécifique pour la boîte MISSION (en rose) */
@@ -102,46 +112,4 @@ with col_gauche:
     unite_emballages = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_emballages")
     st.write(f"**Poids enregistré :** {poids_emballages} {unite_emballages}")
     
-    # Équivalence Emballages (1 emballage = 20g)
-    val_emballages = poids_emballages if unite_emballages == "kg" else poids_emballages / 1000
-    nb_emballages = int(val_emballages / 0.020)
-    st.write(f"💡 *Cela représente environ **{nb_emballages} emballages** jetés !*")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE 2 : Poubelle à Pain ---
-    st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.2); margin-bottom: 25px;">', unsafe_allow_html=True)
-    st.subheader("🥖 Poubelle à Pain")
-    poids_pain = st.number_input("Ajustez la valeur :", min_value=0.0, value=8.0, step=0.5, key="pain")
-    unite_pain = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_pain")
-    st.write(f"**Poids enregistré :** {poids_pain} {unite_pain}")
-    
-    # Équivalence Pain (1 baguette = 250g)
-    val_pain = poids_pain if unite_pain == "kg" else poids_pain / 1000
-    nb_baguettes = int(val_pain / 0.25)
-    st.write(f"💡 *Cela représente environ **{nb_baguettes} baguettes** perdues !*")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-
-# ==========================================
-# COLONNE DROITE
-# ==========================================
-with col_droite:
-    
-    # --- CATEGORIE 1 : Déchets Alimentaires ---
-    st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.2); margin-bottom: 25px;">', unsafe_allow_html=True)
-    st.subheader("🗑️ Déchets Alimentaires")
-    poids_alim = st.number_input("Ajustez la valeur :", min_value=0.0, value=42.0, step=0.5, key="alim")
-    unite_alim = st.selectbox("Choisir l'unité :", ["kg", "g"], key="u_alim")
-    st.write(f"**Poids enregistré :** {poids_alim} {unite_alim}")
-    
-    # Équivalence Repas (1 repas = 150g)
-    val_alim = poids_alim if unite_alim == "kg" else poids_alim / 1000
-    nb_repas = int(val_alim / 0.150)
-    st.write(f"💡 *Cela représente environ **{nb_repas} repas complets** jetés !*")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE 3 : Fruits entamés ---
-    st.markdown('<div style="background-color: #FFB6C1; border: 2px solid #FFFFFF; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.2); margin-bottom: 25px;">', unsafe_allow_html=True)
-    st.subheader("🍎 Fruits entamés")
-    poids_fruits = st.number_input("Ajustez la valeur :", min_value=0.0, value=5.0, step=0.5, key="fruits")
-    unite_fruits = st
+    # Équivalence Emballages (1 emballage = 2
