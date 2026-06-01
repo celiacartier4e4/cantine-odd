@@ -1,12 +1,12 @@
 import streamlit as st
 
-# --- STYLE CSS : FOND DU SITE EN ORANGE ---
+# --- STYLE CSS : FOND DU SITE EN ROSE ---
 st.markdown(
     """
     <style>
-    /* Colore le fond de tout le site en orange pastel */
+    /* Colore le fond de tout le site en rose pastel */
     .stApp {
-        background-color: #FFE5CC;
+        background-color: #FFE5E5;
     }
     </style>
     """,
