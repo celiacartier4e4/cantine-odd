@@ -1,209 +1,198 @@
 import streamlit as st
 
-# Configuration de la page pour un rendu professionnel
+# ==============================================================================
+# CONFIGURATION ET THÉMATISATION DE L'APPLICATION
+# ==============================================================================
 st.set_page_config(
-    page_title="CDSG - Objectif Zéro Gaspi", 
-    page_icon="🍏", 
+    page_title="Dashboard Éco-Responsable - CDSG Jean Giono",
+    page_icon="🍏",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- STYLE CSS AVANCÉ : LOOK INSTITUTIONNEL ET CITOYEN ---
+# Injection CSS avancée pour un rendu "Soft Dark / Premium Eco"
 st.markdown(
     """
     <style>
-    /* Fond sombre haut de gamme */
     .stApp {
-        background: linear-gradient(135deg, #112211 0%, #050A05 100%);
+        background: linear-gradient(135deg, #0F1F15 0%, #050A06 100%);
     }
-    
-    /* Typographies et couleurs globales */
-    h1, h2, h3, h4, h5, h6, .stMarkdown, p, li, label, .stText {
+    h1, h2, h3, h4, h5, h6, p, label, .stMarkdown {
         color: #FFFFFF !important;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
     }
-    
-    /* Séparation des sections */
-    [data-testid="column"]:nth-child(1) {
-        border-right: 2px solid rgba(76, 175, 80, 0.2);
-        padding-right: 30px;
+    /* Style des modules de saisie */
+    .data-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-left: 4px solid #4CAF50;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        border-right: 1px solid rgba(255,255,255,0.05);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding: 20px;
+        border-radius: 0px 12px 12px 0px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    [data-testid="column"]:nth-child(2) {
-        padding-left: 30px;
-    }
-    
-    /* Cartes de saisie (Volets) */
-    .metric-card {
-        background: rgba(255, 255, 255, 0.04);
+    /* Style des blocs de résultats principaux (KPIs) */
+    .kpi-card {
+        background: rgba(76, 175, 80, 0.1);
         border: 1px solid rgba(76, 175, 80, 0.3);
-        padding: 22px;
-        border-radius: 12px;
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-        margin-bottom: 25px;
-    }
-    
-    /* KPI blocs du haut */
-    .kpi-box {
-        background: linear-gradient(135deg, #1E4620 0%, #122B14 100%);
-        border: 1px solid #4CAF50;
-        padding: 15px;
         border-radius: 10px;
+        padding: 15px;
         text-align: center;
-        box-shadow: 0px 4px 15px rgba(76, 175, 80, 0.2);
     }
-    
-    /* Section Mission CDSG */
-    .mission-cdsg {
-        background: linear-gradient(135deg, #1A365D 0%, #0F172A 100%);
+    /* Module institutionnel CDSG */
+    .institution-box {
+        background: rgba(30, 41, 59, 0.5);
         border: 1px solid #3B82F6;
         padding: 20px;
         border-radius: 12px;
-        box-shadow: 0px 4px 20px rgba(59, 130, 246, 0.2);
-        text-align: center;
         margin-top: 15px;
-    }
-    
-    /* Badges de conformité */
-    .status-ok {
-        background-color: #2E7D32;
-        color: #FFFFFF !important;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: bold;
-    }
-    .status-alert {
-        background-color: #D32F2F;
-        color: #FFFFFF !important;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: bold;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# --- EN-TÊTE OFFICIEL ---
-st.markdown("#### 🎖️ PROJET ÉCO-CITOYEN — CLASSE CDSG")
-st.title("🍏 Plateforme de Pilotage Éco-Responsable")
-st.markdown("##### **Collège Jean Giono (Orange)** — Supervision de l'impact des 700 demi-pensionnaires (ODD 12)")
+# ==============================================================================
+# LOGIQUE MÉTIER & CONVERSIONS DE DONNÉES (MOTEUR DE CALCUL)
+# ==============================================================================
+def normaliser_en_kg(poids, unite):
+    """Convertit instantanément la valeur saisie en kilogrammes."""
+    return poids if unite == "kg" else poids / 1000.0
 
+# ==============================================================================
+# INTERFACE UTILISATEUR (UI)
+# ==============================================================================
+
+# En-tête de l'application
+st.markdown("### 🎖️ SYSTÈME DE PILOTAGE ENVIRONNEMENTAL — CADRE CDSG")
+st.title("🍏 Objectif Zéro Gaspi | Collège Jean Giono — Orange")
+st.markdown(
+    "**Outil d'analyse quantitative** développé pour le suivi des 700 demi-pensionnaires. "
+    "Conforme aux indicateurs de l'**ODD 12** (Consommation et production responsables)."
+)
 st.markdown("---")
 
-# --- ZONE CACHÉE : INTERACTION DES DONNÉES (Pour calculs des KPIs en haut) ---
-# Nous créons des variables temporaires pour calculer les totaux avant l'affichage visuel
-with st.sidebar:
-    st.write("🔧 *Paramètres de simulation (Masqués sur l'écran principal)*")
+# ------------------------------------------------------------------------------
+# PIÈCE MAÎTRESSE 1 : COLLECTE DES DONNÉES (LES 5 CATÉGORIES RESTRUCTURÉES)
+# ------------------------------------------------------------------------------
+st.markdown("### 📥 Saisie des Pesées Hebdomadaires")
 
-# Pour que l'expérience utilisateur soit parfaite, on organise la page en deux grandes colonnes de saisie
-col_gauche, col_droite = st.columns(2)
+# Répartition en 3 colonnes asymétriques pour un look "dashboard de contrôle"
+col1, col2, col3 = st.columns([1.1, 1.1, 0.8])
 
-# ==========================================
-# COLONNE GAUCHE : Ressources & Consommables
-# ==========================================
-with col_gauche:
-    st.markdown("### 🥖 Volet A : Suivi des Consommables et Féculents")
-
-    # --- CATEGORIE 2 : Poubelle à Pain ---
-    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-    st.subheader("🥖 Reliquats de Pain (Boulangerie)")
-    poids_pain = st.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain")
-    unite_pain = st.selectbox("Unité :", ["kg", "g"], key="u_pain")
-    val_pain = poids_pain if unite_pain == "kg" else poids_pain / 1000
-    nb_baguettes = int(val_pain / 0.25)
-    st.write(f"📈 **Donnée enregistrée :** {poids_pain} {unite_pain} | *Équivaut à **{nb_baguettes} baguettes** perdues (base 250g).*")
-    if nb_baguettes <= 5:
-        st.markdown('<span class="status-ok">✔ Seuil Conforme</span>', unsafe_allow_html=True)
-    else:
-        st.markdown('<span class="status-alert">⚠️ Seuil Alerte Critique</span>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE 4 : Serviettes en papier ---
-    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-    st.subheader("🧻 Consommation de Serviettes en Papier")
-    poids_serviettes = st.number_input("Masse totale mesurée :", min_value=0.0, value=1.5, step=0.1, key="serviettes")
-    unite_serviettes = st.selectbox("Unité :", ["kg", "g"], key="u_serviettes")
-    val_serviettes = poids_serviettes if unite_serviettes == "kg" else poids_serviettes / 1000
-    nb_serviettes = int(val_serviettes / 0.003)
-    st.write(f"📈 **Donnée enregistrée :** {poids_serviettes} {unite_serviettes} | *Équivaut à **{nb_serviettes} serviettes** jetées (base 3g).*")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE 5 : Emballages ---
-    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-    st.subheader("📦 Flux des Emballages Non Recyclés")
-    poids_emballages = st.number_input("Masse totale mesurée :", min_value=0.0, value=3.0, step=0.5, key="emballages")
-    unite_emballages = st.selectbox("Unité :", ["kg", "g"], key="u_emballages")
-    val_emballages = poids_emballages if unite_emballages == "kg" else poids_emballages / 1000
-    nb_emballages = int(val_emballages / 0.020)
-    st.write(f"📈 **Donnée enregistrée :** {poids_emballages} {unite_emballages} | *Équivaut à **{nb_emballages} emballages indus** (base 20g).*")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ==========================================
-# COLONNE DROITE : Composantes des Repas
-# ==========================================
-with col_droite:
-    st.markdown("### 🍽️ Volet B : Restes Alimentaires et Fruits")
-
-    # --- CATEGORIE 1 : Déchets Alimentaires ---
-    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-    st.subheader("🗑️ Biodéchets - Restes de Plats Cuisinés")
-    poids_alim = st.number_input("Masse totale mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim")
+with col1:
+    # --- CATÉGORIE 1 : Déchets Alimentaires (Restes) ---
+    st.markdown('<div class="data-card">', unsafe_allow_html=True)
+    st.markdown("#### 🗑️ Biodéchets — Restes de Plats")
+    poids_alim = st.number_input("Masse mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim")
     unite_alim = st.selectbox("Unité :", ["kg", "g"], key="u_alim")
-    val_alim = poids_alim if unite_alim == "kg" else poids_alim / 1000
-    nb_repas = int(val_alim / 0.150)
-    st.write(f"📈 **Donnée enregistrée :** {poids_alim} {unite_alim} | *Équivaut à **{nb_repas} repas complets** gaspillés (base 150g).*")
-    if nb_repas < 100:
-        st.markdown('<span class="status-ok">✔ Objectif National Respecté</span>', unsafe_allow_html=True)
-    else:
-        st.markdown('<span class="status-alert">⚠️ Optimisation du service requise</span>', unsafe_allow_html=True)
+    kg_alim = normaliser_en_kg(poids_alim, unite_alim)
+    equiv_repas = int(kg_alim / 0.150) # Base : 150g par repas complet
+    st.markdown(f"**Équivalence :** Approx. `{equiv_repas}` repas complets rejetés.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- CATEGORIE 3 : Fruits entamés ---
-    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-    st.subheader("🍎 Pertes sur les Fruits Fruités")
-    poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits")
+    # --- CATÉGORIE 2 : Poubelle à Pain ---
+    st.markdown('<div class="data-card">', unsafe_allow_html=True)
+    st.markdown("#### 🥖 Reliquats de Pain")
+    poids_pain = st.number_input("Masse mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain")
+    unite_pain = st.selectbox("Unité :", ["kg", "g"], key="u_pain")
+    kg_pain = normaliser_en_kg(poids_pain, unite_pain)
+    equiv_baguettes = int(kg_pain / 0.250) # Base : 250g par baguette
+    st.markdown(f"**Équivalence :** Approx. `{equiv_baguettes}` baguettes de 250g perdues.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col2:
+    # --- CATÉGORIE 3 : Fruits entamés ---
+    st.markdown('<div class="data-card">', unsafe_allow_html=True)
+    st.markdown("#### 🍎 Pertes sur Fruits")
+    poids_fruits = st.number_input("Masse mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits")
     unite_fruits = st.selectbox("Unité :", ["kg", "g"], key="u_fruits")
-    val_fruits = poids_fruits if unite_fruits == "kg" else poids_fruits / 1000
-    nb_fruits = int(val_fruits / 0.120)
-    st.write(f"📈 **Donnée enregistrée :** {poids_fruits} {unite_fruits} | *Équivaut à **{nb_fruits} fruits entiers** perdus (base 120g).*")
+    kg_fruits = normaliser_en_kg(poids_fruits, unite_fruits)
+    equiv_fruits = int(kg_fruits / 0.120) # Base : 120g par fruit
+    st.markdown(f"**Équivalence :** Approx. `{equiv_fruits}` fruits entiers gaspillés.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- ENCADRÉ SPÉCIAL CDSG / CONCOURS NATIONAL ---
+    # --- CATÉGORIE 4 : Serviettes en papier ---
+    st.markdown('<div class="data-card">', unsafe_allow_html=True)
+    st.markdown("#### 🧻 Consommables — Serviettes Papier")
+    poids_serviettes = st.number_input("Masse mesurée :", min_value=0.0, value=1.5, step=0.1, key="serviettes")
+    unite_serviettes = st.selectbox("Unité :", ["kg", "g"], key="u_serviettes")
+    kg_serviettes = normaliser_en_kg(poids_serviettes, unite_serviettes)
+    equiv_serviettes = int(kg_serviettes / 0.003) # Base : 3g par serviette
+    st.markdown(f"**Équivalence :** Approx. `{equiv_serviettes}` serviettes consommées.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col3:
+    # --- CATÉGORIE 5 : Emballages ---
+    st.markdown('<div class="data-card">', unsafe_allow_html=True)
+    st.markdown("#### 📦 Flux des Emballages (Tout-venant)")
+    poids_emballages = st.number_input("Masse mesurée :", min_value=0.0, value=3.0, step=0.5, key="emballages")
+    unite_emballages = st.selectbox("Unité :", ["kg", "g"], key="u_emballages")
+    kg_emballages = normaliser_en_kg(poids_emballages, unite_emballages)
+    equiv_emballages = int(kg_emballages / 0.020) # Base : 20g par emballage
+    st.markdown(f"**Équivalence :** Approx. `{equiv_emballages}` unités jetées.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Note institutionnelle fixe
     st.markdown(
         """
-        <div class="mission-cdsg">
-            <h3 style="color: #60A5FA; margin: 0; font-size: 18px;">🛡️ ENGAGEMENT CITOYEN & DÉFENSE GLOBAL</h3>
-            <p style="font-size: 14px; color: #E2E8F0; margin-top: 5px; font-weight: bold;">Action de Résilience face au Gaspillage Alimentaire</p>
-            <p style="font-size: 13px; color: #94A3B8; font-style: italic; margin: 0; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.2);">
-                "La sécurité globale passe aussi par la préservation de nos ressources stratégiques et la souveraineté alimentaire."
+        <div class="institution-box">
+            <h5 style="color: #60A5FA; margin-0; font-size: 14px;">🛡️ CONTEXTE DEFENSE GLOBAL</h5>
+            <p style="font-size: 12px; color: #94A3B8; margin: 5px 0 0 0; line-height: 1.4;">
+                Sous la direction de <b>M. Thierry Armant</b>, la classe CDSG analyse la résilience du collège face aux enjeux de souveraineté alimentaire.
             </p>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-# --- SECTION DES CALCULS ET BILAN DES CONCOURS ---
+# ------------------------------------------------------------------------------
+# PIÈCE MAÎTRESSE 2 : MÉTRIQUES DE SYNTHÈSE ET CALCULS AVANCÉS (ADEME)
+# ------------------------------------------------------------------------------
 st.markdown("---")
-st.markdown("### 📊 Indicateurs de Synthèse de la Campagne")
+st.markdown("### 📊 Indicateurs Majeurs d'Impact")
 
-total_general_kg = val_pain + val_serviettes + val_emballages + val_alim + val_fruits
-total_repas_perdus = nb_repas + nb_baguettes
-# Facteur ADEME moyen : 1 kg de biodéchets de self ≈ 2.0 kg d'équivalent CO2 produit (production, transport, cuisson)
-co2_impact = total_general_kg * 2.0
+# Calculs globaux consolidés
+total_masse_kg = kg_alim + kg_pain + kg_fruits + kg_serviettes + kg_emballages
+total_unites_nourriture = equiv_repas + equiv_baguettes + equiv_fruits
 
-# Affichage des 3 compteurs clés de performance (KPI)
-kpi1, kpi2, kpi3 = st.columns(3)
-with kpi1:
-    st.markdown(f'<div class="kpi-box"><h5>Masse Totale Générée</h5><h2 style="color:#4CAF50;">{total_general_kg:.2f} kg</h2></div>', unsafe_allow_html=True)
-with kpi2:
-    st.markdown(f'<div class="kpi-box"><h5>Équivalence Nutritionnelle</h5><h2 style="color:#FF9800;">{total_repas_perdus} portions</h2></div>', unsafe_allow_html=True)
-with kpi3:
-    st.markdown(f'<div class="kpi-box"><h5>Empreinte Carbone Générée</h5><h2 style="color:#F44336;">{co2_impact:.2f} kg CO₂e</h2></div>', unsafe_allow_html=True)
+# Facteur carbone moyen ADEME : 1kg de gaspillage en restauration scolaire génère environ 2.0 kg CO2 équivalent (production + transport + fin de vie)
+impact_co2 = total_masse_kg * 2.0
+# Équivalence routière : une voiture moyenne émet environ 0.120 kg CO2 par km (2026 standards)
+km_voiture_equiv = impact_co2 / 0.120
 
-# Barre de progression inversée (Scénarisation du score)
-st.markdown("#### 🎯 Jauge d'Efficacité Éco-Responsable Collective")
-progress_val = max(0.0, min(1.0, (100.0 - total_general_kg) / 100.0))
-st.progress(progress_val)
-st.caption("💡 **Interprétation pour le jury :** Plus la jauge progresse vers les 100%, plus le collège Jean Giono réduit ses déchets et valide les critères de performance environnementale de l'ODD 12.")
+kpi_col1, kpi_col2, kpi_col3 = st.columns(3)
+
+with kpi_col1:
+    st.markdown(
+        f'<div class="kpi-card"><h5>Masse Globale Capturée</h5>'
+        f'<h2 style="color: #4CAF50; margin: 5px 0 0 0;">{total_masse_kg:.2f} kg</h2></div>', 
+        unsafe_allow_html=True
+    )
+
+with kpi_col2:
+    st.markdown(
+        f'<div class="kpi-card"><h5>Volume de Gaspillage Direct</h5>'
+        f'<h2 style="color: #FF9800; margin: 5px 0 0 0;">{total_unites_nourriture} portions</h2></div>', 
+        unsafe_allow_html=True
+    )
+
+with kpi_col3:
+    st.markdown(
+        f'<div class="kpi-card"><h5>Bilan Carbone Associé</h5>'
+        f'<h2 style="color: #F44336; margin: 5px 0 0 0;">{impact_co2:.2f} kg CO₂e</h2>'
+        f'<p style="font-size: 12px; color: #94A3B8; margin: 4px 0 0 0;">Soit {km_voiture_equiv:.0f} km parcourus en voiture citadine</p></div>', 
+        unsafe_allow_html=True
+    )
+
+# Jauge d'évaluation finale
+st.markdown("#### 🎯 Jauge d'Efficience Environnementale")
+# Calcul inversé : moins il y a de déchets, plus la barre est remplie (Objectif théorique max : 100 kg)
+performance_score = max(0.0, min(1.0, (100.0 - total_masse_kg) / 100.0))
+st.progress(performance_score)
+st.caption(
+    "**Note de performance :** Cet indicateur synthétise l'efficacité globale du plan d'action mené par le collège Jean Giono. "
+    "L'objectif validé par la CDSG est le maintien sous le seuil critique des 30,00 kg hebdomadaires."
+)
