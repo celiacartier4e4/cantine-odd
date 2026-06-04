@@ -16,22 +16,22 @@ u_code = "photo-1600021319323-b6c86725227d"
 u_param = "?q=80&w=1920"
 fond_ecran = u_base + u_code + u_param
 
-# --- INJECTION DU STYLE POUR TRANSPARENCE TOTALE ---
+# --- INJECTION DU STYLE POUR TRANSPARENCE ET IMAGE DE FOND ---
 design_global = [
     "<style>",
-    /* Application du fond sur la racine globale de la page */
-    ".stApp, [data-testid='stAppViewContainer'], [data-testid='stMain'], .stMainBlockContainer {",
-    f"background: linear-gradient(rgba(15,23,42,0.45), rgba(15,23,42,0.75)), url('{fond_ecran}') !important;",
+    "[data-testid='stApp'] {",
+    f"background-image: linear-gradient(rgba(15,23,42,0.55), rgba(15,23,42,0.8)), url('{fond_ecran}') !important;",
     "background-size: cover !important;",
     "background-position: center !important;",
     "background-attachment: fixed !important;",
     "}",
-    /* Blanchiment de l'ensemble des textes */
-    "h1, h2, h3, h4, h5, h6, p, label, span, div {",
-    "color: #ffffff !important;",
-    "text-shadow: 1px 1px 3px rgba(0,0,0,0.9);",
+    "[data-testid='stHeader'], [data-testid='stAppViewContainer'] {",
+    "background: transparent !important;",
     "}",
-    /* Conteneurs de saisie translucides pour voir à travers */
+    "h1, h2, h3, h4, h5, h6, p, label, span, div, text {",
+    "color: #ffffff !important;",
+    "text-shadow: 1px 1px 3px rgba(0,0,0,0.9) !important;",
+    "}",
     "div[data-testid='stVerticalBlockBorderWrapper'] > div {",
     "background-color: rgba(15, 23, 42, 0.85) !important;",
     "border: 1px solid #38bdf8 !important;",
@@ -81,41 +81,4 @@ with col_droite:
 
     with st.container(border=True):
         st.write("### 🍎 Pertes sur les Fruits")
-        p_frt = st.number_input("Masse mesurée (kg) :", 0.0, 100.0, 2.0, 0.2, key="fruits")
-        st.write(f"Équivalent : {int(p_frt / 0.12)} fruits gaspillés.")
-
-    with st.container(border=True):
-        st.write("### 🛡️ CONTEXTE CDSG")
-        st.write("📋 **Établissement :** Collège Jean Giono d'Orange.")
-        st.write("💡 Modélisation quantitative liée à l'ODD 12 de l'ONU.")
-        st.write("🚀 Mesures d'impact pour les 700 demi-pensionnaires.")
-
-# ==========================================
-# PANNEAU DE SYNTHÈSE GLOBAL EN BAS
-# ==========================================
-st.divider()
-st.write("<h2>📊 Bilans et Indicateurs Centraux</h2>", unsafe_allow_html=True)
-
-b1, b2 = st.columns([1.3, 1])
-
-with b1:
-    st.write("### 📈 Répartition Globale des Déchets")
-    tot_masse = p_pain + p_serv + p_emb + p_bio + p_frt
-    df_bilan = pd.DataFrame(
-        [[p_bio, p_pain, p_frt, p_serv, p_emb]], 
-        columns=["Biodéchets", "Pain", "Fruits", "Serviettes", "Emballages"]
-    )
-    st.bar_chart(df_bilan, horizontal=True, height=130)
-
-with b2:
-    st.write("### 📊 Calculs d'Impact")
-    bilan_co2 = tot_masse * 2.0
-    equiv_km = bilan_co2 / 0.12
-    
-    st.write(f"🔹 **Masse Globale Capturée :** {tot_masse:.2f} kg")
-    st.write(f"🔹 **Bilan Carbone :** {bilan_co2:.2f} kg CO2e")
-    st.write(f"🔹 **Équivalent Voiture :** {equiv_km:.0f} km")
-    
-    st.write("**🎯 Jauge d'Efficience Collective**")
-    score_bar = max(0.0, min(1.0, (100.0 - tot_masse) / 100.0))
-    st.progress(score_bar)
+        p_frt = st.number_input("Masse mesurée (kg) :", 0.0, 100.0, 2.0, 0.
