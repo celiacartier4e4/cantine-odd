@@ -98,20 +98,13 @@ st.title("🍏 Plateforme de Pilotage Environnemental")
 st.markdown("##### **Collège Jean Giono (Orange)** — Impact des 700 demi-pensionnaires | Référent : M. Thierry Armant")
 st.markdown("---")
 
-# ------------------------------------------------------------------------------
-# INTERFACE EN DEUX GRANDES COLONNES
-# ------------------------------------------------------------------------------
-col_gauche, col_droite = st.columns([1.3, 1])
+# ==============================================================================
+# ÉTAPE 1 : CRÉATION SECRÈTE DES CONTENEURS DE SAISIE (Pour éviter les erreurs Python)
+# ==============================================================================
+# Nous créons des conteneurs vides à droite pour y injecter les formulaires plus bas,
+# mais nous déclarons l'affichage en colonnes tout de suite.
+col_gauche, col_droite = st.columns([1.2, 1])
 
-# Création d'une zone tampon pour injecter le graphique à gauche plus tard dans le script
-with col_gauche:
-    st.markdown("### 📊 Répartition de la Masse des Déchets (kg)")
-    st.write(" ")
-    emplacement_graphique = st.container()
-
-# ==========================================
-# COLONNE DROITE : Saisie de toutes les catégories (Empilées)
-# ==========================================
 with col_droite:
     st.markdown("### 📋 Formulaire de Saisie des Déchets")
     st.write(" ")
@@ -119,7 +112,7 @@ with col_droite:
     # --- CATEGORIE 1 : Biodéchets ---
     st.markdown('<div class="card-base card-green">', unsafe_allow_html=True)
     st.markdown("#### 🗑️ Biodéchets — Restes de Plats Cuisinés")
-    poids_alim = st.number_input("Masse totale mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim")
+    poids_alim = st.number_input("Masse totale mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim", on_change=declencher_mise_a_jour)
     unite_alim = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_alim")
     kg_alim = normaliser_en_kg(poids_alim, unite_alim)
     equiv_repas = int(kg_alim / 0.150)
@@ -129,7 +122,7 @@ with col_droite:
     # --- CATEGORIE 2 : Poubelle à Pain ---
     st.markdown('<div class="card-base card-gold">', unsafe_allow_html=True)
     st.markdown("#### 🥖 Reliquats de Pain (Boulangerie)")
-    poids_pain = st.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain")
+    poids_pain = st.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain", on_change=declencher_mise_a_jour)
     unite_pain = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_pain")
     kg_pain = normaliser_en_kg(poids_pain, unite_pain)
     equiv_baguettes = int(kg_pain / 0.250)
@@ -139,5 +132,13 @@ with col_droite:
     # --- CATEGORIE 3 : Fruits entamés ---
     st.markdown('<div class="card-base card-red">', unsafe_allow_html=True)
     st.markdown("#### 🍎 Pertes sur les Fruits")
-    poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits")
-    unite_fruits = st.selectbox("Unité de mesure :",
+    poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits", on_change=declencher_mise_a_jour)
+    unite_fruits = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_fruits")
+    kg_fruits = normaliser_en_kg(poids_fruits, unite_fruits)
+    equiv_fruits = int(kg_fruits / 0.120)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_fruits} fruits entiers** gaspillés.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- CATEGORIE 4 : Serviettes en papier ---
+    st.markdown('<div class="card-base card-cyan">', unsafe_allow_html=True)
+    st.markdown("#### 🧻 Consommation
