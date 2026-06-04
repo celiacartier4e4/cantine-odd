@@ -10,9 +10,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- URL DU THÉÂTRE ANTIQUE D'ORANGE ---
+# --- URL DE L'ANCIENNE IMAGE DE FOND DÉCOUPÉE ---
 u_base = "https://images.unsplash.com/"
-u_code = "photo-1600021319323-b6c86725227d"
+u_code = "photo-1541339907198-e08756dedf3f"
 u_param = "?q=80&w=1920"
 fond_ecran = u_base + u_code + u_param
 
@@ -75,10 +75,3 @@ with col_gauche:
 
 with col_droite:
     with st.container(border=True):
-        st.write("### 🗑️ Biodéchets — Restes Cuisinés")
-        p_bio = st.number_input("Masse mesurée (kg) :", 0.0, 100.0, 25.0, 1.0, key="biodechets")
-        st.write(f"Équivalent : {int(p_bio / 0.15)} repas jetés.")
-
-    with st.container(border=True):
-        st.write("### 🍎 Pertes sur les Fruits")
-        p_frt = st.number_input("Masse mesurée (kg) :", 0.0, 100.0, 2.0, 0.
