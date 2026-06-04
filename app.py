@@ -10,7 +10,39 @@ st.set_page_config(
     layout="wide"
 )
 
-# En-tête simple et propre
+# --- URL DECOUPÉE POUR EVITER LES COUPURES DE LIGNE ---
+u1 = "https://images.unsplash.com/"
+u2 = "photo-1541339907198-e08756dedf3f"
+u3 = "?q=80&w=1920"
+img_url = u1 + u2 + u3
+
+# --- INJECTION DU FOND D'ECRAN SECURISE ---
+css = [
+    "<style>",
+    ".stApp {",
+    "background: linear-gradient(",
+    "rgba(255,255,255,0.15),",
+    "rgba(15,23,42,0.45)),",
+    f"url('{img_url}');",
+    "background-size: cover;",
+    "background-position: center;",
+    "background-attachment: fixed;",
+    "}",
+    "div[data-testid='stContainer'] {",
+    "background-color: rgba(255,255,255,0.9);",
+    "border-radius: 12px;",
+    "padding: 15px;",
+    "}",
+    "h1, h2, h3, h4, p, span {",
+    "color: #0f172a !important;",
+    "}",
+    "</style>"
+]
+st.markdown("\n".join(css), unsafe_allow_html=True)
+
+# ==========================================
+# EN-TÊTE
+# ==========================================
 st.title("Collège Jean Giono d'Orange")
 st.subheader("Projet Éco-Citoyen - CDSG Giono")
 
