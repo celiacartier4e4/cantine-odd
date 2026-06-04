@@ -10,22 +10,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- STYLE CSS NETTOYÉ ---
+# --- INJECTION DU STYLE CSS (SÉCURISÉ SANS CONFLIT PYTHON) ---
 st.markdown(
     """
     <style>
-    /* Fond principal clair et lumineux */
     .stApp {
         background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 100%);
     }
-
-    /* Textes généraux en bleu nuit très foncé */
     h1, h2, h3, h4, h5, h6, p, label, .stMarkdown, .stText {
         color: #0F172A !important;
         font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
     }
-
-    /* Séparation centrale des colonnes */
     [data-testid="column"]:nth-child(1) {
         border-right: 2px dashed #94A3B8;
         padding-right: 40px;
@@ -33,8 +28,6 @@ st.markdown(
     [data-testid="column"]:nth-child(2) {
         padding-left: 40px;
     }
-
-    /* CARTES AUX COULEURS VIVES */
     .card-base {
         padding: 25px;
         border-radius: 14px;
@@ -42,13 +35,12 @@ st.markdown(
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         border: 2px solid #FFFFFF;
     }
-
     .card-gold { background-color: #FFB703; }
     .card-cyan { background-color: #00B4D8; }
     .card-purple { background-color: #9D4EDD; }
     .card-green { background-color: #2ECC71; }
     .card-red { background-color: #FF4D4D; }
-
+    
     .card-gold *, .card-cyan * { color: #000000 !important; }
     .card-purple *, .card-green *, .card-red * { color: #FFFFFF !important; }
 
@@ -60,7 +52,6 @@ st.markdown(
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         border: 1px solid #E2E8F0;
     }
-
     .institution-box {
         background: #E0F2FE;
         border: 2px solid #3B82F6;
@@ -71,8 +62,6 @@ st.markdown(
     .institution-box * {
         color: #1E3A8A !important;
     }
-
-    /* STYLE DE LA JAUGE MULTICOLORE */
     .progress-container-multi {
         width: 100%;
         background-color: #E2E8F0;
@@ -134,23 +123,4 @@ with col_gauche:
     st.markdown("#### 🥖 Reliquats de Pain (Boulangerie)")
     poids_pain = st.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain")
     unite_pain = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_pain")
-    kg_pain = normaliser_en_kg(poids_pain, unite_pain)
-    equiv_baguettes = int(kg_pain / 0.250)
-    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_baguettes} baguettes** de 250g perdues.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE : Serviettes en papier (CYAN) ---
-    st.markdown('<div class="card-base card-cyan">', unsafe_allow_html=True)
-    st.markdown("#### 🧻 Consommation de Serviettes en Papier")
-    poids_serviettes = st.number_input("Masse totale mesurée :", min_value=0.0, value=1.5, step=0.1, key="serviettes")
-    unite_serviettes = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_serviettes")
-    kg_serviettes = normaliser_en_kg(poids_serviettes, unite_serviettes)
-    equiv_serviettes = int(kg_serviettes / 0.003)
-    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_serviettes} unités** de serviettes jetées.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE : Emballages (VIOLET) ---
-    st.markdown('<div class="card-base card-purple">', unsafe_allow_html=True)
-    st.markdown("#### 📦 Flux des Emballages Non Recyclés")
-    poids_emballages = st.number_input("Masse totale mesurée :", min_value=0.0, value=3.0, step=0.5, key="emballages")
-    unite_emballages = st.selectbox("Unité de mesure :",
+    kg_pain = normaliser_en_kg(p
