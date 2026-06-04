@@ -158,7 +158,7 @@ with col_droite:
     st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_repas} repas complets** rejetés.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- CATEGORIE 3 : Fruits entamés (PARENTHÈSE BIEN FERMÉE ICI) ---
+    # --- CATEGORIE 3 : Fruits entamés ---
     st.markdown('<div class="card-base card-red">', unsafe_allow_html=True)
     st.markdown("#### 🍎 Pertes sur les Fruits")
     poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits", on_change=declencher_mise_a_jour)
@@ -226,6 +226,33 @@ st.bar_chart(
     color=list(couleurs_categories.values()),
     height=200
 )
+
+# ==============================================================================
+# AJOUT : TABLEAUX HISTORIQUES (HEBDOMADAIRE ET MENSUEL)
+# ==============================================================================
+st.markdown("### 📅 Suivi Historique et Temporel des Pesées")
+
+col_semaine, col_mois = st.columns(2)
+
+with col_semaine:
+    st.markdown("##### 🗓️ Bilan Hebdomadaire (en kg)")
+    # Création du tableau éditable pour la semaine (sans mercredi)
+    df_semaine = pd.DataFrame({
+        "Jour": ["Lundi", "Mardi", "Jeudi", "Vendredi"],
+        "Biodéchets": [0.0, 0.0, 0.0, 0.0],
+        "Pain": [0.0, 0.0, 0.0, 0.0],
+        "Fruits": [0.0, 0.0, 0.0, 0.0]
+    })
+    st.data_editor(df_semaine, hide_index=True, use_container_width=True, key="editeur_semaine")
+
+with col_mois:
+    st.markdown("##### 📆 Évolution Mensuelle (Septembre à Juin en kg)")
+    # Création du tableau éditable de Septembre à Juin
+    df_mois = pd.DataFrame({
+        "Mois": ["Septembre", "Octobre", "Novembre", "Décembre", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin"],
+        "Masse Totale Cumulée": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    })
+    st.data_editor(df_mois, hide_index=True, use_container_width=True, key="editeur_mois")
 
 st.markdown("---")
 
