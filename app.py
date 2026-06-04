@@ -5,112 +5,95 @@ import pandas as pd
 # CONFIGURATION DE LA PAGE
 # ==============================================================================
 st.set_page_config(
-    page_title="Collège Jean Giono d'Orange - CDSG",
+    page_title="Giono - CDSG",
     page_icon="🍏",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- INJECTION CSS SÉCURISÉE POUR L'ARRIÈRE-PLAN ET LES CARTES COLORÉES ---
-css_code = """
-<style>
-/* Enlever les marges par défaut de Streamlit */
-.block-container {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-}
-
-/* Image de fond : Avenue Charles Dardun, Orange */
-.stApp {
-    background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(15, 23, 42, 0.4)), 
-                url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1920') no-repeat center center fixed;
-    background-size: cover;
-}
-
-/* Style des titres principaux */
-.main-title {
-    color: #0f172a !important;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 42px !important;
-    font-weight: bold;
-    margin-bottom: 0px !important;
-}
-.sub-title {
-    color: #1e293b !important;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 20px !important;
-    margin-top: 0px !important;
-    margin-bottom: 25px !important;
-}
-
-/* Structure des blocs de saisie colorés */
-.card {
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    font-family: 'Segoe UI', Arial, sans-serif;
-}
-.card-title {
-    font-size: 18px !important;
-    font-weight: bold !important;
-    margin-bottom: 12px !important;
-}
-.card-analysis {
-    font-size: 13px !important;
-    margin-top: 10px !important;
-    font-weight: 500;
-}
-
-/* Couleurs vives des blocs */
-.bg-gold { background-color: #ffb703; color: #000000 !important; }
-.bg-cyan { background-color: #00f5ff; color: #000000 !important; }
-.bg-purple { background-color: #a855f7; color: #ffffff !important; }
-.bg-green { background-color: #22c55e; color: #ffffff !important; }
-.bg-red { background-color: #ef4444; color: #ffffff !important; }
-.bg-dark { background-color: #0f172a; color: #ffffff !important; border: 1px solid #38bdf8; }
-
-/* Panneau de synthèse du bas */
-.bottom-panel {
-    background-color: #090d16;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 30px;
-    border: 1px solid #1e293b;
-}
-.bottom-title {
-    color: #ffffff !important;
-    font-size: 16px !important;
-    font-weight: bold;
-}
-.kpi-box {
-    padding: 10px;
-    border-radius: 20px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
-}
-</style>
-"""
-st.markdown(css_code, unsafe_allow_html=True)
+# Fonction de conversion technique simplifiée
+def to_kg(poids, unite):
+    return poids if unite == "kg" else poids / 1000.0
 
 # ==============================================================================
-# EN-TÊTE DE L'APPLICATION
+# EN-TÊTE
 # ==============================================================================
-st.markdown('<p class="main-title">Collège Jean Giono d\'Orange</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Projet Éco-Citoyen - CDSG Giono</p>', unsafe_allow_html=True)
+st.title("🍏 Collège Jean Giono d'Orange")
+st.subheader("Projet Éco-Citoyen - CDSG Giono")
+st.caption("Avenue Charles Dardun, 84100 Orange | Référent : M. Thierry Armant")
+
+st.divider()
 
 # ==============================================================================
-# DISPOSITION EN DEUX COLONNES PRINCIPALES
+# STRUCTURE EN COLONNES POUR LES 5 CATEGORIES ET LE CONTEXTE
 # ==============================================================================
-col_gauche, col_droite = st.columns(2)
+col1, col2 = st.columns(2)
 
-# --- COLONNE GAUCHE ---
-with col_gauche:
-    # 1. Reliquats de Pain
-    st.markdown('<div class="card bg-gold"><p class="card-title">🥖 Reliquats de Pain (Boulangerie)</p>', unsafe_allow_html=True)
-    c1, c2 = st.columns([2, 1])
-    poids_pain = c1.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain", label_visibility="visible")
-    unite_pain = c2.selectbox("Unité :", ["kg", "g"], key="u_pain
+with col1:
+    # 1. Pain
+    with st.container(border=True):
+        st.markdown("### 🥖 Reliquats de Pain")
+        p_pain = st.number_input("Masse Pain :", min_value=0.0, value=4.0, step=0.5, key="p_pain")
+        u_pain = st.selectbox("Unité Pain :", ["kg", "g"], key="u_p")
+        v_pain = to_kg(p_pain, u_pain)
+        st.caption(f"Soit environ {int(v_pain / 0.25)} baguettes perdues.")
+
+    # 2. Serviettes
+    with st.container(border=True):
+        st.markdown("### 🧻 Serviettes en Papier")
+        p_serv = st.number_input("Masse Serviettes (kg) :", min_value=0.0, value=1.5, step=0.1, key="p_serv")
+        st.caption(f"Soit environ {int(p_serv / 0.003)} unités jetées.")
+
+    # 3. Emballages
+    with st.container(border=True):
+        st.markdown("### 📦 Emballages Non Recyclés")
+        p_emb = st.number_input("Masse Emballages (kg) :", min_value=0.0, value=3.0, step=0.5, key="p_emb")
+        st.caption(f"Soit environ {int(p_emb / 0.02)} unités d'emballages.")
+
+with col2:
+    # 4. Biodéchets
+    with st.container(border=True):
+        st.markdown("### 🗑️ Biodéchets - Plats Cuisinés")
+        p_bio = st.number_input("Masse Biodéchets (kg) :", min_value=0.0, value=25.0, step=1.0, key="p_bio")
+        st.caption(f"Soit environ {int(p_bio / 0.15)} repas complets jetés.")
+
+    # 5. Fruits
+    with st.container(border=True):
+        st.markdown("### 🍎 Pertes sur les Fruits")
+        p_frt = st.number_input("Masse Fruits (kg) :", min_value=0.0, value=2.0, step=0.2, key="p_frt")
+        st.caption(f"Soit environ {int(p_frt / 0.12)} fruits gaspillés.")
+
+    # 6. Cadre Institutionnel
+    with st.container(border=True):
+        st.markdown("### 🛡️ CONTEXTE CDSG")
+        st.info("Collège Jean Giono — Impact environnemental de 700 demi-pensionnaires. Modélisation liée à l'ODD 12 de l'ONU.")
+
+# ==============================================================================
+# PANNEAU DE SYNTHÈSE DU BAS
+# ==============================================================================
+st.divider()
+st.markdown("## 📊 Bilans et Indicateurs Centraux")
+
+b_col1, b_col2 = st.columns([1.2, 1])
+
+with b_col1:
+    st.markdown("#### 📈 Répartition Globale des Déchets Capturés")
+    df_chart = pd.DataFrame([[p_bio, v_pain, p_frt, p_serv, p_emb]], 
+                            columns=["Biodéchets", "Pain", "Fruits", "Serviettes", "Emballages"])
+    st.bar_chart(df_chart, horizontal=True, height=130)
+
+with b_col2:
+    # Calculs de synthèse
+    total_masse = v_pain + p_serv + p_emb + p_bio + p_frt
+    total_co2 = total_masse * 2.0
+    total_km = total_co2 / 0.12
+
+    # Métriques standards Streamlit (propres et incoupables)
+    st.metric("Masse Globale Capturée", f"{total_masse:.2f} kg")
+    st.metric("Bilan Carbone Équivalent", f"{total_co2:.2f} kg CO₂e")
+    st.metric("Équivalence Distance Voiture", f"{total_km:.0f} km")
+
+    # Jauge de progression
+    st.markdown("**🎯 Jauge d'Efficience Collective**")
+    score = max(0.0, min(1.0, (100.0 - total_masse) / 100.0))
+    st.progress(score)
