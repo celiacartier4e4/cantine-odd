@@ -28,19 +28,19 @@ css = [
     "background-position: center;",
     "background-attachment: fixed;",
     "}",
-    /* Force TOUS les textes du site en blanc */
+    # Force TOUS les textes du site en blanc
     "h1, h2, h3, h4, h5, h6, p, label, span, div {",
     "color: #ffffff !important;",
     "text-shadow: 1px 1px 3px rgba(0,0,0,0.9);",
     "}",
-    /* Conteneurs de saisie en fond sombre transparent */
+    # Conteneurs de saisie en fond sombre transparent
     "div[data-testid='stContainer'] {",
     "background-color: rgba(15, 23, 42, 0.85) !important;",
     "border: 1px solid #38bdf8 !important;",
     "border-radius: 12px;",
     "padding: 20px;",
     "}",
-    /* Textes des étiquettes de saisie en blanc */
+    # Textes des étiquettes de saisie en blanc
     "div[data-testid='stWidgetLabel'] p {",
     "color: #ffffff !important;",
     "font-weight: bold !important;",
