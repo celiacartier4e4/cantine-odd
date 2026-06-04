@@ -1,5 +1,5 @@
 import streamlit as st
-import plotly.graph_objects as go
+import pandas as pd
 
 # ==============================================================================
 # CONFIGURATION DE LA PAGE
@@ -35,7 +35,7 @@ st.markdown(
         padding-left: 40px;
     }
 
-    /* --- CARTES AUX COULEURS VIVES ET FLUSHYS --- */
+    /* --- CARTES AUX COULEURS VIVES --- */
     .card-base {
         padding: 20px;
         border-radius: 14px;
@@ -44,18 +44,18 @@ st.markdown(
         border: 2px solid #FFFFFF;
     }
 
-    /* Fonds colorés vifs avec textes adaptés pour rester lisibles */
-    .card-green { background-color: #2ECC71; }   /* Vert néon */
-    .card-gold { background-color: #FFB703; }    /* Jaune/Orange vif */
-    .card-red { background-color: #FF4D4D; }     /* Rouge flashy */
-    .card-cyan { background-color: #00B4D8; }    /* Cyan électrique */
-    .card-purple { background-color: #9D4EDD; }  /* Violet fluo */
+    /* Fonds colorés vifs */
+    .card-green { background-color: #2ECC71; }   /* Vert */
+    .card-gold { background-color: #FFB703; }    /* Jaune/Orange */
+    .card-red { background-color: #FF4D4D; }     /* Rouge */
+    .card-cyan { background-color: #00B4D8; }    /* Cyan */
+    .card-purple { background-color: #9D4EDD; }  /* Violet */
 
-    /* Forcer le texte en blanc ou noir à l'intérieur des cartes */
+    /* Forcer la lisibilité du texte */
     .card-gold *, .card-cyan * { color: #000000 !important; }
     .card-purple *, .card-green *, .card-red * { color: #FFFFFF !important; }
 
-    /* Blocs indicateurs de performance du bas (KPIs) */
+    /* Blocs indicateurs du bas (KPIs) */
     .kpi-card {
         background: #FFFFFF;
         border-radius: 12px;
@@ -98,14 +98,23 @@ st.title("🍏 Plateforme de Pilotage Environnemental")
 st.markdown("##### **Collège Jean Giono (Orange)** — Impact des 700 demi-pensionnaires | Référent : M. Thierry Armant")
 st.markdown("---")
 
-# ------------------------------------------------------------------------------
-# INTERFACE EN DEUX GRANDES COLONNES
-# ------------------------------------------------------------------------------
+# ==============================================================================
+# ÉTAPE 1 : CRÉATION SECRÈTE DES FORMULAIRES DE SAISIE POUR OBTENIR LES VARIABLES
+# ==============================================================================
+# Pour que le graphique à gauche connaisse les valeurs sans bugger, on crée temporairement 
+# les éléments de saisie dans des variables globales en utilisant des "st.sidebar" invisibles 
+# ou des conteneurs, mais pour garder la structure exacte demandée (Saisie à droite), 
+# on va utiliser des conteneurs vides Streamlit (`st.empty()`).
+
+# On prépare les emplacements à droite dans le code pour les forcer à s'exécuter en premier !
+inputs_data = {}
+
+# ==============================================================================
+# ÉTAPE 2 : DISTRIBUTION DE L'INTERFACE EN DEUX COLONNES
+# ==============================================================================
 col_gauche, col_droite = st.columns([1.3, 1])
 
-# ==========================================
-# COLONNE DROITE : Saisie de toutes les catégories (Empilées)
-# ==========================================
+# --- ON REMPLIT LA COLONNE DROITE EN PREMIER POUR LE MOTEUR PYTHON ---
 with col_droite:
     st.markdown("### 📋 Formulaire de Saisie des Déchets")
     st.write(" ")
@@ -174,63 +183,43 @@ with col_droite:
         unsafe_allow_html=True
     )
 
-# ==========================================
-# COLONNE GAUCHE : Graphique en Cercle Dynamique
-# ==========================================
+# --- MAINTENANT ON REMPLIT LA COLONNE GAUCHE (Le graphique possède enfin ses variables !) ---
 with col_gauche:
     st.markdown("### 📊 Répartition en Temps Réel de la Masse des Déchets")
     st.write(" ")
     
-    labels = ["Biodéchets", "Pain", "Fruits", "Serviettes", "Emballages"]
-    valeurs = [kg_alim, kg_pain, kg_fruits, kg_serviettes, kg_emballages]
-    couleurs = ["#2ECC71", "#FFB703", "#FF4D4D", "#00B4D8", "#9D4EDD"]
+    # Création sécurisée du tableau de données pour le graphique
+    total_somme = kg_alim + kg_pain + kg_fruits + kg_serviettes + kg_emballages
     
-    if sum(valeurs) == 0:
-        valeurs = [1, 1, 1, 1, 1]
-        labels = ["En attente de saisie...", "", "", "", ""]
-        couleurs = ["#94A3B8", "#94A3B8", "#94A3B8", "#94A3B8", "#94A3B8"]
-
-    fig = go.Figure(data=[go.Pie(
-        labels=labels, 
-        values=valeurs, 
-        hole=0.45,
-        marker=dict(colors=couleurs, line=dict(color='#FFFFFF', width=2)),
-        textinfo='percent+label',
-        insidetextorientation='horizontal',
-        textfont=dict(size=14, color='#0F172A')
-    )])
+    if total_somme == 0:
+        # Évite le crash si toutes les valeurs valent 0
+        donnees_graphique = pd.DataFrame({
+            "Catégories": ["En attente de données..."],
+            "Masse (kg)": [1.0],
+            "Couleur": ["#94A3B8"]
+        })
+        color_scale = {"domain": ["En attente de données..."], "range": ["#94A3B8"]}
+    else:
+        donnees_graphique = pd.DataFrame({
+            "Catégories": ["Biodéchets 🗑️", "Pain 🥖", "Fruits 🍎", "Serviettes 🧻", "Emballages 📦"],
+            "Masse (kg)": [kg_alim, kg_pain, kg_fruits, kg_serviettes, kg_emballages]
+        })
+        color_scale = {
+            "domain": ["Biodéchets 🗑️", "Pain 🥖", "Fruits 🍎", "Serviettes 🧻", "Emballages 📦"],
+            "range": ["#2ECC71", "#FFB703", "#FF4D4D", "#00B4D8", "#9D4EDD"]
+        }
     
-    fig.update_layout(
-        showlegend=False,
-        margin=dict(t=0, b=0, l=0, r=0),
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        height=550
-    )
-    
-    st.plotly_chart(fig, use_container_width=True, key="pie_chart_eco")
-
-# ------------------------------------------------------------------------------
-# SYNTHÈSE GLOBALE ET RÉSULTATS (EN BAS DE PAGE)
-# ------------------------------------------------------------------------------
-st.markdown("---")
-st.markdown("### 📊 Indicateurs Centraux de Performance de la Campagne")
-
-total_masse_kg = kg_alim + kg_pain + kg_fruits + kg_serviettes + kg_emballages
-total_portions_perdues = equiv_repas + equiv_baguettes + equiv_fruits
-impact_co2 = total_masse_kg * 2.0
-km_voiture_equiv = impact_co2 / 0.120
-
-kpi1, kpi2, kpi3 = st.columns(3)
-with kpi1:
-    st.markdown(f'<div class="kpi-card"><h5>Masse Globale Capturée</h5><h2 style="color: #2ECC71; font-size: 34px; margin: 5px 0 0 0;">{total_masse_kg:.2f} kg</h2></div>', unsafe_allow_html=True)
-with kpi2:
-    st.markdown(f'<div class="kpi-card"><h5>Volume de Gaspillage Alimentaire</h5><h2 style="color: #FFB703; font-size: 34px; margin: 5px 0 0 0;">{total_portions_perdues} portions</h2></div>', unsafe_allow_html=True)
-with kpi3:
-    st.markdown(f'<div class="kpi-card"><h5>Bilan Carbone Associé</h5><h2 style="color: #FF4D4D; font-size: 34px; margin: 5px 0 0 0;">{impact_co2:.2f} kg CO₂e</h2><p style="font-size: 12px; color: #64748B; margin: 2px 0 0 0;">Soit équivalent à {km_voiture_equiv:.0f} km en voiture</p></div>', unsafe_allow_html=True)
-
-st.markdown(" ")
-st.markdown("#### 🎯 Jauge d'Efficience Collective")
-performance_score = max(0.0, min(1.0, (100.0 - total_masse_kg) / 100.0))
-st.progress(performance_score)
-st.caption("💡 **Indicateur d'analyse pour le jury :** Plus la jauge tend vers 100%, plus la production de déchets est optimisée au collège Jean Giono (seuil visé : < 30 kg).")
+    # Affichage du graphique en forme de cercle parfait (Donut)
+    st.vega_lite_chart(donnees_graphique, {
+        "width": "container",
+        "height": 550,
+        "mark": {"type": "arc", "innerRadius": 100, "stroke": "#fff", "strokeWidth": 3},
+        "encoding": {
+            "theta": {"field": "Masse (kg)", "type": "quantitative"},
+            "color": {
+                "field": "Catégories", 
+                "type": "nominal",
+                "scale": color_scale,
+                "legend": {"orient": "bottom", "labelFontSize": 15, "titleFontSize": 15, "offset": 20}
+            },
+            "tooltip":
