@@ -10,6 +10,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
 # --- STYLE CSS : COULEURS VIVES, LUMINEUSES ET CONTRASTÉES ---
 st.markdown(
     """
@@ -79,6 +80,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 # ==============================================================================
 # MOTEUR DE CALCULS TECHNIQUES
 # ==============================================================================
@@ -156,10 +158,93 @@ with col_droite:
     st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_repas} repas complets** rejetés.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- CATEGORIE 3 : Fruits entamés ---
+    # --- CATEGORIE 3 : Fruits entamés (PARENTHÈSE BIEN FERMÉE ICI) ---
     st.markdown('<div class="card-base card-red">', unsafe_allow_html=True)
     st.markdown("#### 🍎 Pertes sur les Fruits")
     poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits", on_change=declencher_mise_a_jour)
     unite_fruits = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_fruits")
     kg_fruits = normaliser_en_kg(poids_fruits, unite_fruits)
-    equiv_fruits = int(kg_fruits / 0.12
+    equiv_fruits = int(kg_fruits / 0.120)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_fruits} fruits entiers** gaspillés.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- BLOC INSTITUTIONNEL CDSG ---
+    st.markdown(
+        """
+        <div class="institution-box">
+        <h4>🛡️ CONTEXTE CLASSE DÉFENSE ET SÉCURITÉ GLOBALES</h4>
+        <p style="font-size: 14px; line-height: 1.5; margin-bottom: 0;">
+        Cette plateforme de modélisation quantitative, supervisée par <b>M. Thierry Armant</b> au <b>Collège Jean Giono</b>,
+        analyse la résilience locale face au gaspillage de ressources stratégiques, répondant directement aux exigences de l'<b>ODD 12</b> de l'ONU.
+        </p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ------------------------------------------------------------------------------
+# SYNTHÈSE GLOBALE ET RÉSULTATS (EN BAS DE PAGE)
+# ------------------------------------------------------------------------------
+st.markdown("---")
+
+# Consolidation des variables
+total_masse_kg = kg_alim + kg_pain + kg_fruits + kg_serviettes + kg_emballages
+total_portions_perdues = equiv_repas + equiv_baguettes + equiv_fruits
+impact_co2 = total_masse_kg * 2.0
+km_voiture_equiv = impact_co2 / 0.120
+
+# ==============================================================================
+# SCHEMA RECAPITULATIF REFAIT AVEC LES NATIVES STREAMLIT CHARTS
+# ==============================================================================
+st.markdown("### 📈 Répartition Globale des Déchets Capturés")
+
+# Formatage natif en colonnes pour Streamlit
+chart_data = pd.DataFrame(
+    [[kg_alim, kg_pain, kg_fruits, kg_serviettes, kg_emballages]],
+    columns=[
+        "Biodéchets (Plats Cuisinés)", 
+        "Reliquats de Pain", 
+        "Pertes sur les Fruits", 
+        "Serviettes en Papier", 
+        "Flux des Emballages"
+    ]
+)
+
+# Attribution exacte des couleurs par catégorie
+couleurs_categories = {
+    "Biodéchets (Plats Cuisinés)": "#2ECC71",
+    "Reliquats de Pain": "#FFB703",
+    "Pertes sur les Fruits": "#FF4D4D",
+    "Serviettes en Papier": "#00B4D8",
+    "Flux des Emballages": "#9D4EDD"
+}
+
+# Affichage direct du diagramme en barres horizontales
+st.bar_chart(
+    chart_data,
+    horizontal=True,
+    color=list(couleurs_categories.values()),
+    height=200
+)
+
+st.markdown("---")
+
+# ==============================================================================
+# INDICATEURS CENTRAUX (KPIS)
+# ==============================================================================
+st.markdown("### 📊 Indicateurs Centraux de Performance de la Campagne")
+
+kpi1, kpi2, kpi3 = st.columns(3)
+with kpi1:
+    st.markdown(f'<div class="kpi-card"><h5>Masse Globale Capturée</h5><h2 style="color: #2ECC71; font-size: 34px; margin: 5px 0 0 0;">{total_masse_kg:.2f} kg</h2></div>', unsafe_allow_html=True)
+with kpi2:
+    st.markdown(f'<div class="kpi-card"><h5>Volume de Gaspillage Alimentaire</h5><h2 style="color: #FFB703; font-size: 34px; margin: 5px 0 0 0;">{total_portions_perdues} portions</h2></div>', unsafe_allow_html=True)
+with kpi3:
+    st.markdown(f'<div class="kpi-card"><h5>Bilan Carbone Associé</h5><h2 style="color: #FF4D4D; font-size: 34px; margin: 5px 0 0 0;">{impact_co2:.2f} kg CO₂e</h2><p style="font-size: 12px; color: #64748B; margin: 2px 0 0 0;">Soit équivalent à {km_voiture_equiv:.0f} km en voiture</p></div>', unsafe_allow_html=True)
+
+# Barre d'évaluation finale
+st.markdown(" ")
+st.markdown("#### 🎯 Jauge d'Efficience Collective")
+performance_score = max(0.0, min(1.0, (100.0 - total_masse_kg) / 100.0))
+st.progress(performance_score)
+st.caption("💡 **Indicateur d'analyse pour le jury :** Plus la jauge tend vers 100%, plus la production de déchets est optimisée au collège Jean Giono (seuil visé : < 30 kg).")
