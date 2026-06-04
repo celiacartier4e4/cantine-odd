@@ -10,11 +10,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- URL DE L'ANCIENNE IMAGE DE FOND DÉCOUPÉE ---
-u_base = "https://images.unsplash.com/"
-u_code = "photo-1541339907198-e08756dedf3f"
-u_param = "?q=80&w=1920"
-fond_ecran = u_base + u_code + u_param
+# --- URL DE TON IMAGE DE FOND EXTRAITE ET DÉCOUPÉE ---
+u_base = "https://provence-alpes-cotedazur.com/"
+u_code = "app/uploads/crt-paca/2020/12/thumbs/"
+u_file = "orange-f-2018-14945-1920x960.jpg"
+fond_ecran = u_base + u_code + u_file
 
 # --- INJECTION DU STYLE GLOSSY (GLASSMORPHISM) ---
 design_global = [
@@ -32,7 +32,6 @@ design_global = [
     "color: #ffffff !important;",
     "text-shadow: 1px 1px 3px rgba(0,0,0,0.8) !important;",
     "}",
-    # Effet Vitré Brillant (Glossy) sur les blocs
     "div[data-testid='stVerticalBlockBorderWrapper'] > div {",
     "background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)) !important;",
     "backdrop-filter: blur(10px) !important;",
@@ -88,38 +87,4 @@ with col_droite:
         p_frt = st.number_input("Masse mesurée (kg) :", 0.0, 100.0, 2.0, 0.2, key="fruits")
         st.write(f"Équivalent : {int(p_frt / 0.12)} fruits gaspillés.")
 
-    with st.container(border=True):
-        st.write("### 🛡️ CONTEXTE CDSG")
-        st.write("📋 **Établissement :** Collège Jean Giono d'Orange.")
-        st.write("💡 Modélisation quantitative liée à l'ODD 12 de l'ONU.")
-        st.write("🚀 Mesures d'impact pour les 700 demi-pensionnaires.")
-
-# ==========================================
-# PANNEAU DE SYNTHÈSE GLOBAL EN BAS
-# ==========================================
-st.divider()
-st.write("<h2>📊 Bilans et Indicateurs Centraux</h2>", unsafe_allow_html=True)
-
-b1, b2 = st.columns([1.3, 1])
-
-with b1:
-    st.write("### 📈 Répartition Globale des Déchets")
-    tot_masse = p_pain + p_serv + p_emb + p_bio + p_frt
-    df_bilan = pd.DataFrame(
-        [[p_bio, p_pain, p_frt, p_serv, p_emb]], 
-        columns=["Biodéchets", "Pain", "Fruits", "Serviettes", "Emballages"]
-    )
-    st.bar_chart(df_bilan, horizontal=True, height=130)
-
-with b2:
-    st.write("### 📊 Calculs d'Impact")
-    bilan_co2 = tot_masse * 2.0
-    equiv_km = bilan_co2 / 0.12
-    
-    st.write(f"🔹 **Masse Globale Capturée :** {tot_masse:.2f} kg")
-    st.write(f"🔹 **Bilan Carbone :** {bilan_co2:.2f} kg CO2e")
-    st.write(f"🔹 **Équivalent Voiture :** {equiv_km:.0f} km")
-    
-    st.write("**🎯 Jauge d'Efficience Collective**")
-    score_bar = max(0.0, min(1.0, (100.0 - tot_masse) / 100.0))
-    st.progress(score_bar)
+    with st
