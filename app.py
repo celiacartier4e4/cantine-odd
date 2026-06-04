@@ -10,26 +10,28 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- URL DU THÉÂTRE ANTIQUE DECOUPÉE ---
+# --- URL DU THÉÂTRE ANTIQUE D'ORANGE ---
 u_base = "https://images.unsplash.com/"
 u_code = "photo-1600021319323-b6c86725227d"
 u_param = "?q=80&w=1920"
 fond_ecran = u_base + u_code + u_param
 
-# --- INJECTION DU DESIGN (NOUVEAU SÉLECTEUR) ---
+# --- INJECTION DU STYLE POUR TRANSPARENCE TOTALE ---
 design_global = [
     "<style>",
-    "[data-testid='stAppViewContainer'] {",
+    /* Application du fond sur la racine globale de la page */
+    ".stApp, [data-testid='stAppViewContainer'], [data-testid='stMain'], .stMainBlockContainer {",
     f"background: linear-gradient(rgba(15,23,42,0.45), rgba(15,23,42,0.75)), url('{fond_ecran}') !important;",
     "background-size: cover !important;",
     "background-position: center !important;",
     "background-attachment: fixed !important;",
     "}",
+    /* Blanchiment de l'ensemble des textes */
     "h1, h2, h3, h4, h5, h6, p, label, span, div {",
     "color: #ffffff !important;",
     "text-shadow: 1px 1px 3px rgba(0,0,0,0.9);",
     "}",
-    # Rendre les conteneurs natifs transparents pour voir le fond
+    /* Conteneurs de saisie translucides pour voir à travers */
     "div[data-testid='stVerticalBlockBorderWrapper'] > div {",
     "background-color: rgba(15, 23, 42, 0.85) !important;",
     "border: 1px solid #38bdf8 !important;",
