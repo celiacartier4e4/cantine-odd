@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- STYLE CSS : COULEURS VIVES, LUMINEUSES ET CONTRASTÉES ---
+# --- STYLE CSS Nettoyé et Sécurisé ---
 st.markdown(
     """
     <style>
@@ -34,7 +34,7 @@ st.markdown(
         padding-left: 40px;
     }
 
-    /* --- CARTES AUX COULEURS VIVES ET FLUSHYS --- */
+    /* --- CARTES AUX COULEURS VIVES --- */
     .card-base {
         padding: 25px;
         border-radius: 14px;
@@ -43,18 +43,15 @@ st.markdown(
         border: 2px solid #FFFFFF;
     }
 
-    /* Fonds colorés vifs pour chaque catégorie */
-    .card-gold { background-color: #FFB703; } /* Jaune/Orange */
-    .card-cyan { background-color: #00B4D8; } /* Cyan */
-    .card-purple { background-color: #9D4EDD; } /* Violet */
-    .card-green { background-color: #2ECC71; } /* Vert */
-    .card-red { background-color: #FF4D4D; } /* Rouge */
+    .card-gold { background-color: #FFB703; }
+    .card-cyan { background-color: #00B4D8; }
+    .card-purple { background-color: #9D4EDD; }
+    .card-green { background-color: #2ECC71; }
+    .card-red { background-color: #FF4D4D; }
 
-    /* Forcer le texte lisible à l'intérieur des cartes */
     .card-gold *, .card-cyan * { color: #000000 !important; }
     .card-purple *, .card-green *, .card-red * { color: #FFFFFF !important; }
 
-    /* Blocs indicateurs de performance du bas (KPIs) */
     .kpi-card {
         background: #FFFFFF;
         border-radius: 12px;
@@ -64,7 +61,6 @@ st.markdown(
         border: 1px solid #E2E8F0;
     }
 
-    /* Encadré institutionnel CDSG */
     .institution-box {
         background: #E0F2FE;
         border: 2px solid #3B82F6;
@@ -76,7 +72,7 @@ st.markdown(
         color: #1E3A8A !important;
     }
 
-    /* --- STYLE DE LA JAUGE MULTICOLORE PERSONNALISÉE --- */
+    /* JAUGE MULTICOLORE */
     .progress-container-multi {
         width: 100%;
         background-color: #E2E8F0;
@@ -90,5 +86,15 @@ st.markdown(
     }
     .progress-segment {
         height: 35px;
-        transition: width 0.5s ease-in-out;
-        display: flex
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    }
+    .segment-text-black {
+        color: #000000 !important;
+        text
+        
