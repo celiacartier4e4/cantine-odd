@@ -33,7 +33,7 @@ style_css = (
     ".kpi-red { background: #4E232B; border: 1.5px solid #FF4D4D; }"
     ".institution-box { background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1.5px solid #2563EB; padding: 10px; border-radius: 8px; margin-bottom: 8px; }"
     ".institution-box * { color: #1E40AF !important; }"
-    "/* Customisation de la jauge de progression pour la rendre plus flashy */"
+    "/* Dégradé flashy pour la jauge de progression */"
     "div [data-testid='stProgressBar'] > div > div { background-image: linear-gradient(to right, #FF4D4D, #FFB703, #2ECC71) !important; }"
     "</style>"
 )
@@ -53,7 +53,7 @@ st.markdown("<h2 style='margin:0 0 5px 0; padding:0; font-size:24px;'>🍏 Plate
 st.markdown("<p style='margin:0 0 10px 0; font-size:13px;'><b>Collège Jean Giono (Orange)</b> — Impact des 700 demi-pensionnaires | Référent : M. Thierry Armant</p>", unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------
-# INITIALISATION DES VARIABLES DE SAISIE
+# INITIALISATION DES VARIABLES DE SAISIE POUR ÉVITER LES ERREURS DE LECTURE
 # ------------------------------------------------------------------------------
 if "p_pain" not in st.session_state: st.session_state["p_pain"] = 4.0
 if "p_serv" not in st.session_state: st.session_state["p_serv"] = 1.5
@@ -62,4 +62,8 @@ if "p_frut" not in st.session_state: st.session_state["p_frut"] = 2.0
 if "p_emb" not in st.session_state: st.session_state["p_emb"] = 3.0
 
 # ------------------------------------------------------------------------------
-# STRUCTURE EN 2 GRANDES
+# STRUCTURE EN 2 GRANDES COLONNES (GAUCHE = RECAPS VISUELS / DROITE = SAISIES SÉCURISÉES)
+# ------------------------------------------------------------------------------
+col_gauche_bilan, col_droite_saisie = st.columns([1.2, 1])
+
+# =
