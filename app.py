@@ -10,31 +10,31 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CONFIGURATION DU DESIGN ET DE L'IMAGE DE FOND ---
+# --- URL DU THÉÂTRE ANTIQUE DECOUPÉE ---
 u_base = "https://images.unsplash.com/"
 u_code = "photo-1600021319323-b6c86725227d"
 u_param = "?q=80&w=1920"
 fond_ecran = u_base + u_code + u_param
 
+# --- INJECTION DU DESIGN (NOUVEAU SÉLECTEUR) ---
 design_global = [
     "<style>",
-    ".stApp {",
-    f"background: linear-gradient(rgba(15,23,42,0.4), rgba(15,23,42,0.7)), url('{fond_ecran}') !important;",
+    "[data-testid='stAppViewContainer'] {",
+    f"background: linear-gradient(rgba(15,23,42,0.45), rgba(15,23,42,0.75)), url('{fond_ecran}') !important;",
     "background-size: cover !important;",
     "background-position: center !important;",
     "background-attachment: fixed !important;",
     "}",
     "h1, h2, h3, h4, h5, h6, p, label, span, div {",
     "color: #ffffff !important;",
-    "text-shadow: 1px 1px 2px rgba(0,0,0,0.9);",
+    "text-shadow: 1px 1px 3px rgba(0,0,0,0.9);",
     "}",
-    # On force le conteneur ET son fond à devenir transparents
-    "div[data-testid='ststContainer'], div[data-testid='stVerticalBlockBorderWrapper'] > div {",
+    # Rendre les conteneurs natifs transparents pour voir le fond
+    "div[data-testid='stVerticalBlockBorderWrapper'] > div {",
     "background-color: rgba(15, 23, 42, 0.85) !important;",
-    "background: rgba(15, 23, 42, 0.85) !important;",
     "border: 1px solid #38bdf8 !important;",
     "border-radius: 12px !important;",
-    "padding: 15px !important;",
+    "padding: 18px !important;",
     "}",
     "div[data-testid='stWidgetLabel'] p {",
     "color: #ffffff !important;",
@@ -48,7 +48,7 @@ st.markdown("\n".join(design_global), unsafe_allow_html=True)
 # EN-TÊTE DE LA PAGE
 # ==========================================
 st.title("Collège Jean Giono d'Orange")
-st.subheader("Projet Éco-Citoyen - CLASSE DEFENSE (CDSG Giono)")
+st.subheader("Projet Éco-Citoyen - CLASSE DÉFENSE (CDSG Giono)")
 
 # ==========================================
 # ESPACE DE SAISIE EN 2 COLONNES
@@ -92,7 +92,7 @@ with col_droite:
 # PANNEAU DE SYNTHÈSE GLOBAL EN BAS
 # ==========================================
 st.divider()
-st.write("## 📊 Bilans et Indicateurs Centraux")
+st.write("<h2>📊 Bilans et Indicateurs Centraux</h2>", unsafe_allow_html=True)
 
 b1, b2 = st.columns([1.3, 1])
 
