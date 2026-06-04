@@ -87,6 +87,9 @@ st.markdown(
 def normaliser_en_kg(poids, unite):
     return poids if unite == "kg" else poids / 1000.0
 
+def declencher_mise_a_jour():
+    pass
+
 # ==============================================================================
 # EN-TÊTE DU DASHBOARD
 # ==============================================================================
@@ -96,34 +99,20 @@ st.markdown("##### **Collège Jean Giono (Orange)** — Impact des 700 demi-pens
 st.markdown("---")
 
 # ==============================================================================
-# STRUCTURE DES COLONNES (Création des zones d'affichage)
+# ZONE DU GRAPHIQUE COMPLÈTE (TOUT EN HAUT)
 # ==============================================================================
-col_gauche, col_droite = st.columns([1.2, 1])
+st.markdown("### 📊 Répartition Comparative des Déchets de l'Établissement")
+# Conteneur magique qui réserve la place du graphique avant de faire les calculs
+zone_graphique_principale = st.empty()
+st.markdown("---")
 
-# On prépare un espace vide à gauche pour le graphique, pour pouvoir faire les saisies d'abord
+# ------------------------------------------------------------------------------
+# INTERFACE EN DEUX GRANDES COLONNES (RETOUR À TA STRUCTURE INITIALE)
+# ------------------------------------------------------------------------------
+col_gauche, col_droite = st.columns(2)
+
+# ==========================================
+# COLONNE GAUCHE : Boulangerie & Consommables
+# ==========================================
 with col_gauche:
-    st.markdown("### 📊 Répartition de la Masse des Déchets (kg)")
-    st.write(" ")
-    zone_du_graphique = st.empty() # Cet espace magique attendra nos données
-
-# ==============================================================================
-# COLONNE DROITE : Les Formulaires de Saisie
-# ==============================================================================
-with col_droite:
-    st.markdown("### 📋 Formulaire de Saisie des Déchets")
-    st.write(" ")
-    
-    # --- CATEGORIE 1 : Biodéchets ---
-    st.markdown('<div class="card-base card-green">', unsafe_allow_html=True)
-    st.markdown("#### 🗑️ Biodéchets — Restes de Plats Cuisinés")
-    poids_alim = st.number_input("Masse totale mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim")
-    unite_alim = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_alim")
-    kg_alim = normaliser_en_kg(poids_alim, unite_alim)
-    equiv_repas = int(kg_alim / 0.150)
-    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_repas} repas complets** rejetés.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE 2 : Poubelle à Pain ---
-    st.markdown('<div class="card-base card-gold">', unsafe_allow_html=True)
-    st.markdown("#### 🥖 Reliquats de Pain (Boulangerie)")
-    poids_pain
+    st.markdown("### 📋 Volet A : Suivi des Consommables et Fécul
