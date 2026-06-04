@@ -44,14 +44,14 @@ def normaliser_en_kg(poids, unite):
     return poids if unite == "kg" else poids / 1000.0
 
 # ==============================================================================
-# EN-TÊTE DU DASHBOARD (Condensé)
+# EN-TÊTE DU DASHBOARD
 # ==============================================================================
 st.markdown("<p style='margin:0; font-size:12px; font-weight:bold; color:#2563EB !important;'>🎖️ PROJET ÉCO-CITOYEN — CADRE CLASSE CDSG</p>", unsafe_allow_html=True)
 st.markdown("<h2 style='margin:0 0 5px 0; padding:0; font-size:26px;'>🍏 Plateforme Réseau de Pilotage Environnemental</h2>", unsafe_allow_html=True)
 st.markdown("<p style='margin:0 0 10px 0; font-size:14px;'><b>Collège Jean Giono (Orange)</b> — Impact des 700 demi-pensionnaires | Référent : M. Thierry Armant</p>", unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------
-# STRUCTURE EN 3 COLONNES VISUELLES (Évite le défilement vertical)
+# STRUCTURE EN 3 COLONNES VISUELLES (Tout rentre sur un seul écran)
 # ------------------------------------------------------------------------------
 col_gauche, col_milieu, col_droite = st.columns([1, 1, 1.2])
 
@@ -63,3 +63,21 @@ with col_gauche:
 
     # --- Poubelle à Pain ---
     st.markdown('<div class="card-base card-gold">', unsafe_allow_html=True)
+    st.markdown("<h5 style='margin:0; font-size:14px;'>🥖 Reliquats de Pain (Boulangerie)</h5>", unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    poids_pain = c1.number_input("Masse Pain :", min_value=0.0, value=4.0, step=0.5, key="pain", label_visibility="collapsed")
+    unite_pain = c2.selectbox("Unité Pain :", ["kg", "g"], key="u_pain", label_visibility="collapsed")
+    kg_pain = normaliser_en_kg(poids_pain, unite_pain)
+    equiv_baguettes = int(kg_pain / 0.250)
+    st.markdown(f"<p style='margin:4px 0 0 0; font-size:12px;'>📊 <b>Analyse d'équivalence :</b> Environ <b>{equiv_baguettes} baguettes</b> de 250g perdues.</p>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- Serviettes en papier ---
+    st.markdown('<div class="card-base card-cyan">', unsafe_allow_html=True)
+    st.markdown("<h5 style='margin:0; font-size:14px;'>🧻 Consommation de Serviettes en Papier</h5>", unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    poids_serviettes = c1.number_input("Masse Serviettes :", min_value=0.0, value=1.5, step=0.1, key="serviettes", label_visibility="collapsed")
+    unite_serviettes = c2.selectbox("Unité Serviettes :", ["kg", "g"], key="u_serviettes", label_visibility="collapsed")
+    kg_serviettes = normaliser_en_kg(poids_serviettes, unite_serviettes)
+    equiv_serviettes = int(kg_serviettes / 0.003)
+    st.markdown(f"<p style='margin:4px 0 0 0; font-size:12px;'>📊 <b>Analyse d'équivalence :</b> Environ <b>{equiv_serviettes} unités</b> de serviettes jetées.</p>", unsafe_allow_html=True)
