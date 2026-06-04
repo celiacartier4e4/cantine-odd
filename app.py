@@ -69,4 +69,26 @@ st.markdown(
         background: #E0F2FE;
         border: 2px solid #3B82F6;
         padding: 22px;
-        border
+        border-radius: 12px;
+        margin-bottom: 35px;
+    }
+    .institution-box * {
+        color: #1E3A8A !important;
+    }
+
+    /* --- STYLE DE LA JAUGE MULTICOLORE PERSONNALISÉE --- */
+    .progress-container-multi {
+        width: 100%;
+        background-color: #E2E8F0;
+        border-radius: 25px;
+        display: flex;
+        overflow: hidden;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        margin-top: 15px;
+        margin-bottom: 5px;
+        border: 1px solid #CBD5E1;
+    }
+    .progress-segment {
+        height: 35px;
+        transition: width 0.5s ease-in-out;
+        display: flex
