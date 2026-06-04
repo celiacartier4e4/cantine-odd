@@ -123,4 +123,7 @@ with col_gauche:
     st.markdown("#### 🥖 Reliquats de Pain (Boulangerie)")
     poids_pain = st.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain")
     unite_pain = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_pain")
-    kg_pain = normaliser_en_kg(p
+    
+    # --- LIGNE CORRIGÉE ---
+    kg_pain = normaliser_en_kg(poids_pain, unite_pain)
+    st.markdown('</div>', unsafe_allow_html=True)
