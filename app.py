@@ -1,6 +1,5 @@
 import streamlit as st
-import pandas as pd          # Nécessaire pour le schéma récapitulatif
-import plotly.express as px  # Nécessaire pour le schéma récapitulatif
+import pandas as pd
 
 # ==============================================================================
 # CONFIGURATION DE LA PAGE
@@ -137,3 +136,30 @@ with col_gauche:
     unite_emballages = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_emballages")
     kg_emballages = normaliser_en_kg(poids_emballages, unite_emballages)
     equiv_emballages = int(kg_emballages / 0.020)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_emballages} unités** d'emballage indus.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ==========================================
+# COLONNE DROITE : Alimentation & Contexte
+# ==========================================
+with col_droite:
+    st.markdown("### 🍽️ Volet B : Restes Alimentaires et Cadre d'Étude")
+    st.write(" ")
+
+    # --- CATEGORIE 1 : Déchets Alimentaires (Restes de repas) ---
+    st.markdown('<div class="card-base card-green">', unsafe_allow_html=True)
+    st.markdown("#### 🗑️ Biodéchets — Restes de Plats Cuisinés")
+    poids_alim = st.number_input("Masse totale mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim", on_change=declencher_mise_a_jour)
+    unite_alim = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_alim")
+    kg_alim = normaliser_en_kg(poids_alim, unite_alim)
+    equiv_repas = int(kg_alim / 0.150)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_repas} repas complets** rejetés.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- CATEGORIE 3 : Fruits entamés ---
+    st.markdown('<div class="card-base card-red">', unsafe_allow_html=True)
+    st.markdown("#### 🍎 Pertes sur les Fruits")
+    poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits", on_change=declencher_mise_a_jour)
+    unite_fruits = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_fruits")
+    kg_fruits = normaliser_en_kg(poids_fruits, unite_fruits)
+    equiv_fruits = int(kg_fruits / 0.12
