@@ -1,4 +1,5 @@
 import streamlit as st
+import plotly.graph_objects as go  # Nécessaire pour le graphique en cercle personnalisé
 
 # ==============================================================================
 # CONFIGURATION DE LA PAGE
@@ -18,13 +19,13 @@ st.markdown(
     .stApp {
         background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 100%);
     }
-    
+
     /* Textes généraux en bleu nuit très foncé pour un contraste maximal */
     h1, h2, h3, h4, h5, h6, p, label, .stMarkdown, .stText {
         color: #0F172A !important;
         font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
     }
-    
+
     /* Séparation centrale des colonnes */
     [data-testid="column"]:nth-child(1) {
         border-right: 2px dashed #94A3B8;
@@ -33,27 +34,27 @@ st.markdown(
     [data-testid="column"]:nth-child(2) {
         padding-left: 40px;
     }
-    
+
     /* --- CARTES AUX COULEURS VIVES ET FLUSHYS --- */
     .card-base {
-        padding: 25px;
+        padding: 20px;
         border-radius: 14px;
-        margin-bottom: 35px;
+        margin-bottom: 20px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         border: 2px solid #FFFFFF;
     }
-    
+
     /* Fonds colorés vifs avec textes adaptés pour rester lisibles */
-    .card-gold { background-color: #FFB703; }    /* Jaune/Orange vif */
-    .card-cyan { background-color: #00B4D8; }    /* Cyan électrique */
-    .card-purple { background-color: #9D4EDD; }  /* Violet fluo */
-    .card-green { background-color: #2ECC71; }   /* Vert néon */
-    .card-red { background-color: #FF4D4D; }     /* Rouge flashy */
-    
-    /* Forcer le texte en blanc ou noir à l'intérieur des cartes pour que ce soit beau et lisible */
+    .card-gold { background-color: #FFB703; } /* Jaune/Orange vif */
+    .card-cyan { background-color: #00B4D8; } /* Cyan électrique */
+    .card-purple { background-color: #9D4EDD; } /* Violet fluo */
+    .card-green { background-color: #2ECC71; } /* Vert néon */
+    .card-red { background-color: #FF4D4D; } /* Rouge flashy */
+
+    /* Forcer le texte en blanc ou noir à l'intérieur des cartes */
     .card-gold *, .card-cyan * { color: #000000 !important; }
     .card-purple *, .card-green *, .card-red * { color: #FFFFFF !important; }
-    
+
     /* Blocs indicateurs de performance du bas (KPIs) */
     .kpi-card {
         background: #FFFFFF;
@@ -63,7 +64,7 @@ st.markdown(
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         border: 1px solid #E2E8F0;
     }
-    
+
     /* Encadré institutionnel CDSG */
     .institution-box {
         background: #E0F2FE;
@@ -86,7 +87,6 @@ st.markdown(
 def normaliser_en_kg(poids, unite):
     return poids if unite == "kg" else poids / 1000.0
 
-# Fonction vide nécessaire pour forcer le rafraîchissement immédiat de Streamlit lors du clic prolongé
 def declencher_mise_a_jour():
     pass
 
@@ -101,24 +101,43 @@ st.markdown("---")
 # ------------------------------------------------------------------------------
 # INTERFACE EN DEUX GRANDES COLONNES
 # ------------------------------------------------------------------------------
-col_gauche, col_droite = st.columns(2)
+col_gauche, col_droite = st.columns([1.2, 1])  # Don de plus de largeur à gauche pour le graphique
 
 # ==========================================
-# COLONNE GAUCHE : Boulangerie & Consommables
+# COLONNE DROITE : Saisie de toutes les catégories (Empilées)
 # ==========================================
-with col_gauche:
-    st.markdown("### 📋 Volet A : Suivi des Consommables et Féculents")
-    st.write(" ") 
+with col_droite:
+    st.markdown("### 📋 Formulaire de Saisie des Déchets")
+    st.write(" ")
+    
+    # --- CATEGORIE 1 : Biodéchets ---
+    st.markdown('<div class="card-base card-green">', unsafe_allow_html=True)
+    st.markdown("#### 🗑️ Biodéchets — Restes de Plats Cuisinés")
+    poids_alim = st.number_input("Masse totale mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim", on_change=declencher_mise_a_jour)
+    unite_alim = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_alim")
+    kg_alim = normaliser_en_kg(poids_alim, unite_alim)
+    equiv_repas = int(kg_alim / 0.150)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_repas} repas complets** rejetés.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # --- CATEGORIE 2 : Poubelle à Pain ---
     st.markdown('<div class="card-base card-gold">', unsafe_allow_html=True)
     st.markdown("#### 🥖 Reliquats de Pain (Boulangerie)")
-    # on_change=declencher_mise_a_jour force l'actualisation en continu quand on reste appuyé
     poids_pain = st.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain", on_change=declencher_mise_a_jour)
     unite_pain = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_pain")
     kg_pain = normaliser_en_kg(poids_pain, unite_pain)
     equiv_baguettes = int(kg_pain / 0.250)
     st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_baguettes} baguettes** de 250g perdues.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- CATEGORIE 3 : Fruits entamés ---
+    st.markdown('<div class="card-base card-red">', unsafe_allow_html=True)
+    st.markdown("#### 🍎 Pertes sur les Fruits")
+    poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits", on_change=declencher_mise_a_jour)
+    unite_fruits = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_fruits")
+    kg_fruits = normaliser_en_kg(poids_fruits, unite_fruits)
+    equiv_fruits = int(kg_fruits / 0.120)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_fruits} fruits entiers** gaspillés.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- CATEGORIE 4 : Serviettes en papier ---
@@ -141,47 +160,68 @@ with col_gauche:
     st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_emballages} unités** d'emballage indus.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-
-# ==========================================
-# COLONNE DROITE : Alimentation & Contexte
-# ==========================================
-with col_droite:
-    st.markdown("### 🍽️ Volet B : Restes Alimentaires et Cadre d'Étude")
-    st.write(" ") 
-
-    # --- CATEGORIE 1 : Déchets Alimentaires (Restes de repas) ---
-    st.markdown('<div class="card-base card-green">', unsafe_allow_html=True)
-    st.markdown("#### 🗑️ Biodéchets — Restes de Plats Cuisinés")
-    poids_alim = st.number_input("Masse totale mesurée :", min_value=0.0, value=25.0, step=1.0, key="alim", on_change=declencher_mise_a_jour)
-    unite_alim = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_alim")
-    kg_alim = normaliser_en_kg(poids_alim, unite_alim)
-    equiv_repas = int(kg_alim / 0.150)
-    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_repas} repas complets** rejetés.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- CATEGORIE 3 : Fruits entamés ---
-    st.markdown('<div class="card-base card-red">', unsafe_allow_html=True)
-    st.markdown("#### 🍎 Pertes sur les Fruits")
-    poids_fruits = st.number_input("Masse totale mesurée :", min_value=0.0, value=2.0, step=0.2, key="fruits", on_change=declencher_mise_a_jour)
-    unite_fruits = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_fruits")
-    kg_fruits = normaliser_en_kg(poids_fruits, unite_fruits)
-    equiv_fruits = int(kg_fruits / 0.120)
-    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_fruits} fruits entiers** gaspillés.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
     # --- BLOC INSTITUTIONNEL CDSG ---
     st.markdown(
         """
         <div class="institution-box">
-            <h4>🛡️ CONTEXTE CLASSE DÉFENSE ET SÉCURITÉ GLOBALES</h4>
-            <p style="font-size: 14px; line-height: 1.5; margin-bottom: 0;">
-                Cette plateforme de modélisation quantitative, supervisée par <b>M. Thierry Armant</b> au <b>Collège Jean Giono</b>, 
-                analyse la résilience locale face au gaspillage de ressources stratégiques, répondant directement aux exigences de l'<b>ODD 12</b> de l'ONU.
-            </p>
+        <h4>🛡️ CONTEXTE CLASSE DÉFENSE ET SÉCURITÉ GLOBALES</h4>
+        <p style="font-size: 14px; line-height: 1.5; margin-bottom: 0;">
+        Cette plateforme de modélisation quantitative, supervisée par <b>M. Thierry Armant</b> au <b>Collège Jean Giono</b>,
+        analyse la résilience locale face au gaspillage de ressources stratégiques, répondant directement aux exigences de l'<b>ODD 12</b> de l'ONU.
+        </p>
         </div>
         """,
         unsafe_allow_html=True
     )
+
+# ==========================================
+# COLONNE GAUCHE : Graphique en Cercle Dynamique
+# ==========================================
+with col_gauche:
+    st.markdown("### 📊 Répartition en Temps Réel de la Masse des Déchets")
+    st.write(" ")
+    
+    # Préparation des données pour le graphique
+    labels = [
+        "🗑️ Biodéchets", 
+        "🥖 Pain", 
+        "🍎 Fruits", 
+        "🧻 Serviettes", 
+        "📦 Emballages"
+    ]
+    valeurs = [kg_alim, kg_pain, kg_fruits, kg_serviettes, kg_emballages]
+    
+    # Association stricte des couleurs CSS correspondantes
+    couleurs = [
+        "#2ECC71",  # Vert
+        "#FFB703",  # Jaune/Orange
+        "#FF4D4D",  # Rouge
+        "#00B4D8",  # Cyan
+        "#9D4EDD"   # Violet
+    ]
+    
+    # Construction du graphique circulaire Plotly
+    fig = go.Figure(data=[go.Pie(
+        labels=labels, 
+        values=valeurs, 
+        hole=0.4,  # Crée un graphique en "Donut" plus moderne et lisible
+        marker=dict(colors=couleurs, line=dict(color='#FFFFFF', width=2)),
+        textinfo='percent+label',
+        insidetextorientation='radial',
+        textfont=dict(size=14, color='#0F172A')
+    )])
+    
+    # Configuration du design pour qu'il s'intègre au fond du site
+    fig.update_layout(
+        showlegend=False,
+        margin=dict(t=10, b=10, l=10, r=10),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        height=600  # Donne une grande taille pour être visible de loin
+    )
+    
+    # Affichage du graphique
+    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
 
 # ------------------------------------------------------------------------------
@@ -193,10 +233,10 @@ st.markdown("### 📊 Indicateurs Centraux de Performance de la Campagne")
 # Consolidation des variables
 total_masse_kg = kg_alim + kg_pain + kg_fruits + kg_serviettes + kg_emballages
 total_portions_perdues = equiv_repas + equiv_baguettes + equiv_fruits
-impact_co2 = total_masse_kg * 2.0  
+impact_co2 = total_masse_kg * 2.0
 km_voiture_equiv = impact_co2 / 0.120
 
-# Cartes KPI blanches épurées qui ressortent super bien
+# Cartes KPI blanches épurées
 kpi1, kpi2, kpi3 = st.columns(3)
 with kpi1:
     st.markdown(f'<div class="kpi-card"><h5>Masse Globale Capturée</h5><h2 style="color: #2ECC71; font-size: 34px; margin: 5px 0 0 0;">{total_masse_kg:.2f} kg</h2></div>', unsafe_allow_html=True)
