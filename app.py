@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 
 # ==============================================================================
 # CONFIGURATION DE LA PAGE
@@ -71,48 +70,4 @@ st.markdown(
         border: 2px solid #3B82F6;
         padding: 22px;
         border-radius: 12px;
-        margin-bottom: 35px;
-    }
-    .institution-box * {
-        color: #1E3A8A !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# ==============================================================================
-# MOTEUR DE CALCULS TECHNIQUES
-# ==============================================================================
-def normaliser_en_kg(poids, unite):
-    return poids if unite == "kg" else poids / 1000.0
-
-def declencher_mise_a_jour():
-    pass
-
-# ==============================================================================
-# EN-TÊTE DU DASHBOARD
-# ==============================================================================
-st.markdown("#### 🎖️ PROJET ÉCO-CITOYEN — CADRE CLASSE CDSG")
-st.title("🍏 Plateforme de Pilotage Environnemental")
-st.markdown("##### **Collège Jean Giono (Orange)** — Impact des 700 demi-pensionnaires | Référent : M. Thierry Armant")
-st.markdown("---")
-
-# ==============================================================================
-# ZONE DU GRAPHIQUE COMPLÈTE (TOUT EN HAUT)
-# ==============================================================================
-st.markdown("### 📊 Répartition Comparative des Déchets de l'Établissement")
-# Conteneur magique qui réserve la place du graphique avant de faire les calculs
-zone_graphique_principale = st.empty()
-st.markdown("---")
-
-# ------------------------------------------------------------------------------
-# INTERFACE EN DEUX GRANDES COLONNES (RETOUR À TA STRUCTURE INITIALE)
-# ------------------------------------------------------------------------------
-col_gauche, col_droite = st.columns(2)
-
-# ==========================================
-# COLONNE GAUCHE : Boulangerie & Consommables
-# ==========================================
-with col_gauche:
-    st.markdown("### 📋 Volet A : Suivi des Consommables et Fécul
+        margin-bottom: 35px
