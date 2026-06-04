@@ -1,62 +1,95 @@
 import streamlit as st
 import pandas as pd
 
-# ==============================================================================
-# CONFIGURATION DE LA PAGE
-# ==============================================================================
+# ==========================================
+# CONFIGURATION
+# ==========================================
 st.set_page_config(
-    page_title="Collège Jean Giono - CDSG",
+    page_title="Giono - CDSG",
     page_icon="🍏",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
-# --- INJECTION DU DESIGN ET DE L'ARRIÈRE-PLAN (LIGNES COURTES ANTI-COUPURE) ---
-css_style = [
+# --- CSS EN LIGNES TRÈS COURTES ---
+css = [
     "<style>",
-    ".block-container { padding: 1.5rem 3rem !important; }",
-    ".stApp { background: linear-gradient(rgba(255,255,255,0.1), ",
-    "rgba(15,23,42,0.4)), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1920') ",
-    "no-repeat center center fixed; background-size: cover; }",
-    ".main-title { color: #0f172a !important; font-family: sans-serif; ",
-    "font-size: 42px !important; font-weight: bold; margin: 0 !important; }",
-    ".sub-title { color: #1e293b !important; font-family: sans-serif; ",
-    "font-size: 20px !important; margin: 0 0 20px 0 !important; }",
-    ".card { padding: 15px 20px; border-radius: 12px; margin-bottom: 15px; ",
-    "box-shadow: 0 4px 10px rgba(0,0,0,0.15); font-family: sans-serif; }",
-    ".card-title { font-size: 16px !important; font-weight: bold !important; ",
-    "margin-bottom: 8px !important; }",
-    ".card-analysis { font-size: 12px !important; margin-top: 8px !important; ",
-    "font-weight: 500; }",
-    ".bg-gold { background-color: #ffb703; color: #000000 !important; }",
-    ".bg-cyan { background-color: #00f5ff; color: #000000 !important; }",
-    ".bg-purple { background-color: #a855f7; color: #ffffff !important; }",
-    ".bg-green { background-color: #22c55e; color: #ffffff !important; }",
-    ".bg-red { background-color: #ef4444; color: #ffffff !important; }",
-    ".bg-dark { background-color: #0f172a; color: #ffffff !important; ",
+    ".stApp {",
+    "background: linear-gradient(",
+    "rgba(255,255,255,0.1),rgba(15,23,42,0.4)),",
+    "url('https://images.unsplash.com/",
+    "photo-1541339907198-e08756dedf3f?q=80&w=1920');",
+    "background-size: cover;",
+    "}",
+    ".card { padding: 15px; border-radius: 12px;",
+    "margin-bottom: 15px; color:black !important; }",
+    ".bg-gold { background: #ffb703; }",
+    ".bg-cyan { background: #00f5ff; }",
+    ".bg-purple { background: #a855f7; color:white !important; }",
+    ".bg-green { background: #22c55e; color:white !important; }",
+    ".bg-red { background: #ef4444; color:white !important; }",
+    ".bg-dark { background: #0f172a; color:white !important;",
     "border: 1px solid #38bdf8; }",
-    ".bottom-panel { background-color: #090d16; border-radius: 12px; ",
-    "padding: 20px; margin-top: 25px; border: 1px solid #1e293b; }",
-    ".bottom-title { color: #ffffff !important; font-size: 15px !important; ",
-    "font-weight: bold; margin-bottom: 10px !important; }",
-    ".kpi-box { padding: 8px; border-radius: 20px; text-align: center; ",
-    "font-weight: bold; font-size: 13px; margin-bottom: 8px; }",
-    "div[data-testid='stWidgetLabel'] p { color: inherit !important; font-weight: bold; }",
+    ".bottom-panel { background: #090d16; border-radius:12px;",
+    "padding: 20px; border: 1px solid #1e293b; }",
+    "div[data-testid='stWidgetLabel'] p {",
+    "color: inherit !important; font-weight: bold; }",
     "</style>"
 ]
-st.markdown("\n".join(css_style), unsafe_allow_html=True)
+st.markdown("\n".join(css), unsafe_allow_html=True)
 
-# ==============================================================================
-# EN-TÊTE DU COLLÈGE
-# ==============================================================================
-st.markdown('<p class="main-title">Collège Jean Giono d\'Orange</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Projet Éco-Citoyen - CDSG Giono</p>', unsafe_allow_html=True)
+# ==========================================
+# EN-TÊTE
+# ==========================================
+st.header("Collège Jean Giono d'Orange")
+st.subheader("Projet Éco-Citoyen - CDSG Giono")
 
-# ==============================================================================
-# MISE EN PAGE : DOUBLE COLONNE DE BLOCS (COMME SUR LA PHOTO)
-# ==============================================================================
-col_gauche, col_droite = st.columns(2)
+# ==========================================
+# COLONNES DE SAISIE (MÊME PARCOURS QUE LA PHOTO)
+# ==========================================
+col_g, col_d = st.columns(2)
 
-with col_gauche:
-    # 1. Reliquats de Pain
-    st.markdown('<div class="card bg-gold"><p class="card-title">🥖 Reliquats de Pain (Boulangerie)</p>', unsafe_allow_html
+with col_g:
+    # 1. Pain
+    st.markdown('<div class="card bg-gold">', unsafe_allow_html=True)
+    st.markdown("### 🥖 Reliquats de Pain (Boulangerie)")
+    p_pain = st.number_input("Masse (kg) :", 0.0, 100.0, 4.0, 0.5, key="p1")
+    eq_p = int(p_pain / 0.25)
+    st.markdown(f"Equiv: {eq_p} baguettes.", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # 2. Serviettes
+    st.markdown('<div class="card bg-cyan">', unsafe_allow_html=True)
+    st.markdown("### 🧻 Serviettes en Papier")
+    p_serv = st.number_input("Masse (kg) :", 0.0, 100.0, 1.5, 0.1, key="p2")
+    eq_s = int(p_serv / 0.003)
+    st.markdown(f"Equiv: {eq_s} serviettes.", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # 3. Emballages
+    st.markdown('<div class="card bg-purple">', unsafe_allow_html=True)
+    st.markdown("### 📦 Emballages Non Recyclés")
+    p_emb = st.number_input("Masse (kg) :", 0.0, 100.0, 3.0, 0.5, key="p3")
+    eq_e = int(p_emb / 0.02)
+    st.markdown(f"Equiv: {eq_e} emballages.", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col_d:
+    # 4. Biodéchets
+    st.markdown('<div class="card bg-green">', unsafe_allow_html=True)
+    st.markdown("### 🗑️ Biodéchets — Restes Cuisinés")
+    p_bio = st.number_input("Masse (kg) :", 0.0, 100.0, 25.0, 1.0, key="p4")
+    eq_b = int(p_bio / 0.15)
+    st.markdown(f"Equiv: {eq_b} repas jetés.", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # 5. Fruits
+    st.markdown('<div class="card bg-red">', unsafe_allow_html=True)
+    st.markdown("### 🍎 Pertes sur les Fruits")
+    p_frt = st.number_input("Masse (kg) :", 0.0, 100.0, 2.0, 0.2, key="p5")
+    eq_f = int(p_frt / 0.12)
+    st.markdown(f"Equiv: {eq_f} fruits gaspillés.", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # 6. Contexte
+    st.markdown('<div class="card bg-dark">', unsafe_allow_html=True)
+    st.markdown("###
