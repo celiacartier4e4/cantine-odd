@@ -10,16 +10,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- STYLE CSS Nettoyé et Sécurisé ---
+# --- STYLE CSS NETTOYÉ ---
 st.markdown(
     """
     <style>
-    /* Fond principal clair et ultra lumineux */
+    /* Fond principal clair et lumineux */
     .stApp {
         background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 100%);
     }
 
-    /* Textes généraux en bleu nuit très foncé pour un contraste maximal */
+    /* Textes généraux en bleu nuit très foncé */
     h1, h2, h3, h4, h5, h6, p, label, .stMarkdown, .stText {
         color: #0F172A !important;
         font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
@@ -34,7 +34,7 @@ st.markdown(
         padding-left: 40px;
     }
 
-    /* --- CARTES AUX COULEURS VIVES --- */
+    /* CARTES AUX COULEURS VIVES */
     .card-base {
         padding: 25px;
         border-radius: 14px;
@@ -72,7 +72,7 @@ st.markdown(
         color: #1E3A8A !important;
     }
 
-    /* JAUGE MULTICOLORE */
+    /* STYLE DE LA JAUGE MULTICOLORE */
     .progress-container-multi {
         width: 100%;
         background-color: #E2E8F0;
@@ -96,5 +96,61 @@ st.markdown(
     }
     .segment-text-black {
         color: #000000 !important;
-        text
-        
+        text-shadow: none !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# ==============================================================================
+# MOTEUR DE CALCULS TECHNIQUES
+# ==============================================================================
+def normaliser_en_kg(poids, unite):
+    return poids if unite == "kg" else poids / 1000.0
+
+# ==============================================================================
+# EN-TÊTE DU DASHBOARD
+# ==============================================================================
+st.markdown("#### 🎖️ PROJET ÉCO-CITOYEN — CADRE CLASSE CDSG")
+st.title("🍏 Plateforme de Pilotage Environnemental")
+st.markdown("##### **Collège Jean Giono (Orange)** — Impact des 700 demi-pensionnaires | Référent : M. Thierry Armant")
+st.markdown("---")
+
+# ------------------------------------------------------------------------------
+# INTERFACE EN DEUX GRANDES COLONNES
+# ------------------------------------------------------------------------------
+col_gauche, col_droite = st.columns(2)
+
+# ==========================================
+# COLONNE GAUCHE : Volet A (Suivi Consommables)
+# ==========================================
+with col_gauche:
+    st.markdown("### 📋 Volet A : Suivi des Consommables et Féculents")
+    st.write(" ")
+    
+    # --- CATEGORIE : Poubelle à Pain (JAUNE) ---
+    st.markdown('<div class="card-base card-gold">', unsafe_allow_html=True)
+    st.markdown("#### 🥖 Reliquats de Pain (Boulangerie)")
+    poids_pain = st.number_input("Masse totale mesurée :", min_value=0.0, value=4.0, step=0.5, key="pain")
+    unite_pain = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_pain")
+    kg_pain = normaliser_en_kg(poids_pain, unite_pain)
+    equiv_baguettes = int(kg_pain / 0.250)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_baguettes} baguettes** de 250g perdues.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- CATEGORIE : Serviettes en papier (CYAN) ---
+    st.markdown('<div class="card-base card-cyan">', unsafe_allow_html=True)
+    st.markdown("#### 🧻 Consommation de Serviettes en Papier")
+    poids_serviettes = st.number_input("Masse totale mesurée :", min_value=0.0, value=1.5, step=0.1, key="serviettes")
+    unite_serviettes = st.selectbox("Unité de mesure :", ["kg", "g"], key="u_serviettes")
+    kg_serviettes = normaliser_en_kg(poids_serviettes, unite_serviettes)
+    equiv_serviettes = int(kg_serviettes / 0.003)
+    st.markdown(f"📊 **Analyse d'équivalence :** Environ **{equiv_serviettes} unités** de serviettes jetées.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- CATEGORIE : Emballages (VIOLET) ---
+    st.markdown('<div class="card-base card-purple">', unsafe_allow_html=True)
+    st.markdown("#### 📦 Flux des Emballages Non Recyclés")
+    poids_emballages = st.number_input("Masse totale mesurée :", min_value=0.0, value=3.0, step=0.5, key="emballages")
+    unite_emballages = st.selectbox("Unité de mesure :",
