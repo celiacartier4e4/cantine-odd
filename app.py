@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- STYLE CSS DIRECT ET SÉCURISÉ (ZÉRO TRIPLE GUILLEMETS) ---
+# --- STYLE CSS DIRECT ET SÉCURISÉ (CHAÎNE CONTINUE CONCATÉNÉE) ---
 style_css = (
     "<style>"
     ".block-container { padding-top: 1rem !important; padding-bottom: 0rem !important; padding-left: 2rem !important; padding-right: 2rem !important; }"
@@ -63,67 +63,3 @@ with col_gauche:
 
     # --- Poubelle à Pain ---
     st.markdown('<div class="card-base card-gold">', unsafe_allow_html=True)
-    st.markdown("<h5 style='margin:0; font-size:14px;'>Pain perdu (Boulangerie)</h5>", unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    poids_pain = c1.number_input("Masse :", min_value=0.0, value=4.0, step=0.5, key="pain", label_visibility="collapsed")
-    unite_pain = c2.selectbox("Unité :", ["kg", "g"], key="u_pain", label_visibility="collapsed")
-    kg_pain = normaliser_en_kg(poids_pain, unite_pain)
-    st.markdown(f"<p style='margin:2px 0 0 0; font-size:12px;'>📊 Équiv: <b>{int(kg_pain / 0.250)} baguettes</b></p>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- Serviettes en papier ---
-    st.markdown('<div class="card-base card-cyan">', unsafe_allow_html=True)
-    st.markdown("<h5 style='margin:0; font-size:14px;'>Serviettes en Papier</h5>", unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    poids_serviettes = c1.number_input("Masse :", min_value=0.0, value=1.5, step=0.1, key="serviettes", label_visibility="collapsed")
-    unite_serviettes = c2.selectbox("Unité :", ["kg", "g"], key="u_serviettes", label_visibility="collapsed")
-    kg_serviettes = normaliser_en_kg(poids_serviettes, unite_serviettes)
-    st.markdown(f"<p style='margin:2px 0 0 0; font-size:12px;'>📊 Équiv: <b>{int(kg_serviettes / 0.003)} jetées</b></p>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ==========================================
-# COLONNE 2 : Volet B (Biodéchets & Emballages)
-# ==========================================
-with col_milieu:
-    st.markdown("<h4 style='margin:0 0 5px 0; font-size:16px; border-bottom:2px solid #2ECC71;'>🗑️ Volet B : Restes de Repas</h4>", unsafe_allow_html=True)
-
-    # --- Déchets Alimentaires ---
-    st.markdown('<div class="card-base card-green">', unsafe_allow_html=True)
-    st.markdown("<h5 style='margin:0; font-size:14px;'>Biodéchets (Plats cuisinés)</h5>", unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    poids_alim = c1.number_input("Masse :", min_value=0.0, value=25.0, step=1.0, key="alim", label_visibility="collapsed")
-    unite_alim = c2.selectbox("Unité :", ["kg", "g"], key="u_alim", label_visibility="collapsed")
-    kg_alim = normaliser_en_kg(poids_alim, unite_alim)
-    st.markdown(f"<p style='margin:2px 0 0 0; font-size:12px;'>📊 Équiv: <b>{int(kg_alim / 0.150)} repas rejetés</b></p>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- Fruits entamés ---
-    st.markdown('<div class="card-base card-red">', unsafe_allow_html=True)
-    st.markdown("<h5 style='margin:0; font-size:14px;'>Pertes sur les Fruits</h5>", unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    poids_fruits = c1.number_input("Masse :", min_value=0.0, value=2.0, step=0.2, key="fruits", label_visibility="collapsed")
-    unite_fruits = c2.selectbox("Unité :", ["kg", "g"], key="u_fruits", label_visibility="collapsed")
-    kg_fruits = normaliser_en_kg(poids_fruits, unite_fruits)
-    st.markdown(f"<p style='margin:2px 0 0 0; font-size:12px;'>📊 Équiv: <b>{int(kg_fruits / 0.120)} fruits gaspillés</b></p>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # --- Flux des Emballages ---
-    st.markdown('<div class="card-base card-purple">', unsafe_allow_html=True)
-    st.markdown("<h5 style='margin:0; font-size:14px;'>Emballages Non Recyclés</h5>", unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    poids_emballages = c1.number_input("Masse :", min_value=0.0, value=3.0, step=0.5, key="emballages", label_visibility="collapsed")
-    unite_emballages = c2.selectbox("Unité :", ["kg", "g"], key="u_emballages", label_visibility="collapsed")
-    kg_emballages = normaliser_en_kg(poids_emballages, unite_emballages)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ==========================================
-# COLONNE 3 : Contexte CDSG & Grilles Historiques
-# ==========================================
-with col_droite:
-    st.markdown("<h4 style='margin:0 0 5px 0; font-size:16px; border-bottom:2px solid #2563EB;'>📋 Suivi Temporel & Cadre</h4>", unsafe_allow_html=True)
-    
-    # Bloc institutionnel compact
-    st.markdown('<div class="institution-box"><p style="font-size: 11px; margin: 0; line-height:1.3;"><b>🛡️ CADRE CLASSE DÉFENSE (CDSG) :</b> Analyse de résilience locale face au gaspillage de ressources stratégiques au <b>Collège Jean Giono</b> (ODD 12 ONU).</p></div>', unsafe_allow_html=True)
-
-    # Tableaux éditables empilés à hauteur restreinte
-    st.markdown("<p style='margin:2px 0; font-size:12px; font-weight:bold;'>🗓️ Bilan
